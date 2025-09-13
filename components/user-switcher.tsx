@@ -10,26 +10,28 @@ import { Button } from "@/components/ui/button"
 // Fixed users for F1 Favorites collaboration - matching Velt setup
 const users = [
   {
-    id: "user-1",
-    userId: "user-1",
-    organizationId: "f1-favorites-org",
-    name: "F1 Fan Alpha",
-    email: "alpha@f1favorites.com",
-    avatar: "",
-    initials: "FA",
+    id: "alex-thunder-v2",
+    userId: "alex-thunder-v2",
+    organizationId: "f1-racing-hub-2024",
+    name: "Alex Thunder",
+    email: "alex@speedracing.com",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=AlexThunder&backgroundColor=b6e3f4,c0aede,d1d4f9",
+    initials: "AT",
     color: "#FF1744" // Ferrari red
   },
   {
-    id: "user-2",
-    userId: "user-2",
-    organizationId: "f1-favorites-org",
-    name: "F1 Fan Beta",
-    email: "beta@f1favorites.com",
-    avatar: "",
-    initials: "FB",
+    id: "jordan-swift-v2",
+    userId: "jordan-swift-v2",
+    organizationId: "f1-racing-hub-2024",
+    name: "Jordan Swift",
+    email: "jordan@velocityteam.com",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=JordanSwift&backgroundColor=ffdfbf,ffd5dc,d1d4f9",
+    initials: "JS",
     color: "#00BCD4" // Mercedes cyan
   },
 ]
+
+const DOCUMENT_ID = "f1-dashboard-v2-2024"
 
 export function UserSwitcher() {
   const [open, setOpen] = React.useState(false)
@@ -46,11 +48,11 @@ export function UserSwitcher() {
             organizationId: selectedUser.organizationId,
             name: selectedUser.name,
             email: selectedUser.email,
-            photoUrl: undefined
+            photoUrl: selectedUser.avatar
           })
 
           // Set document after user identification
-          await client.setDocument('f1-favorites-dashboard', {
+          await client.setDocument(DOCUMENT_ID, {
             documentName: 'F1 Favorites Dashboard'
           })
         } catch (error) {
@@ -75,11 +77,11 @@ export function UserSwitcher() {
         organizationId: user.organizationId,
         name: user.name,
         email: user.email,
-        photoUrl: undefined
+        photoUrl: user.avatar
       })
 
       // Re-set document for new user
-      await client.setDocument('f1-favorites-dashboard', {
+      await client.setDocument(DOCUMENT_ID, {
         documentName: 'F1 Favorites Dashboard'
       })
 
