@@ -1,11 +1,9 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { useLiveState } from '@veltdev/react'
 import type { Session } from "@/lib/api"
 
 const FAVORITES_STORAGE_KEY = "f1-favorites"
-const FAVORITES_LIVE_STATE_KEY = "collaborative-favorites"
 
 export interface FavoriteSession {
   session_key: number
@@ -19,36 +17,31 @@ export interface FavoriteSession {
 }
 
 export function useFavorites() {
-  // Use Velt's useLiveState for real-time collaborative favorites
-  const [favorites, setFavorites, serverConnectionState] = useLiveState(
-    FAVORITES_LIVE_STATE_KEY,
-    [] as FavoriteSession[],
-    {
-      syncDuration: 100, // Sync every 100ms for fast updates
-      resetLiveState: false, // Don't reset when component unmounts
-      listenToNewChangesOnly: false // Get all data, not just new changes
-    }
-  )
-
+  const [favorites, setFavorites] = useState<FavoriteSession[]>([])
   const [loading, setLoading] = useState(true)
 
-  // Set loading to false once we have initial data
+  // Load favorites from localStorage immediately for fast UX
   useEffect(() => {
-    // Small delay to allow Velt to initialize
-    const timer = setTimeout(() => {
+    try {
+      const stored = localStorage.getItem(FAVORITES_STORAGE_KEY)
+      if (stored) {
+        const parsedFavorites = JSON.parse(stored)
+        setFavorites(parsedFavorites)
+      }
+    } catch (error) {
+      console.error("[v0] Error loading favorites:", error)
+    } finally {
       setLoading(false)
-    }, 500)
-
-    return () => clearTimeout(timer)
+    }
   }, [])
 
-  // Backup to localStorage (but Velt is primary)
+  // Save favorites to localStorage whenever favorites change
   useEffect(() => {
-    if (!loading && favorites.length > 0) {
+    if (!loading) {
       try {
         localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites))
       } catch (error) {
-        console.error("Error saving favorites backup:", error)
+        console.error("[v0] Error saving favorites:", error)
       }
     }
   }, [favorites, loading])
@@ -65,15 +58,18 @@ export function useFavorites() {
       added_at: new Date().toISOString(),
     }
 
-    // Check if already exists before adding
-    if (!favorites.some((fav) => fav.session_key === session.session_key)) {
-      setFavorites([...favorites, favoriteSession])
-    }
-  }, [favorites, setFavorites])
+    setFavorites((prev) => {
+      // Check if already exists
+      if (prev.some((fav) => fav.session_key === session.session_key)) {
+        return prev
+      }
+      return [...prev, favoriteSession]
+    })
+  }, [])
 
   const removeFromFavorites = useCallback((sessionKey: number) => {
-    setFavorites(favorites.filter((fav) => fav.session_key !== sessionKey))
-  }, [favorites, setFavorites])
+    setFavorites((prev) => prev.filter((fav) => fav.session_key !== sessionKey))
+  }, [])
 
   const isFavorite = useCallback(
     (sessionKey: number) => {
@@ -84,7 +80,7 @@ export function useFavorites() {
 
   const clearAllFavorites = useCallback(() => {
     setFavorites([])
-  }, [setFavorites])
+  }, [])
 
   const getFavoritesByYear = useCallback(
     (year?: number) => {
@@ -103,6 +99,5 @@ export function useFavorites() {
     clearAllFavorites,
     getFavoritesByYear,
     favoritesCount: favorites.length,
-    serverConnectionState, // Expose connection state for debugging
   }
 }

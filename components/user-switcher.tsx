@@ -2,107 +2,25 @@
 
 import * as React from "react"
 import { Check, ChevronsUpDown, User } from "lucide-react"
-import { useVeltClient } from '@veltdev/react'
+import { useUser } from "@/contexts/user-context"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
-// Fixed users for F1 Favorites collaboration - matching Velt setup
-const users = [
-  {
-    id: "alex-thunder-v2",
-    userId: "alex-thunder-v2",
-    organizationId: "f1-racing-hub-2024",
-    name: "Alex Thunder",
-    email: "alex@speedracing.com",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=AlexThunder&backgroundColor=b6e3f4,c0aede,d1d4f9",
-    initials: "AT",
-    color: "#FF1744" // Ferrari red
-  },
-  {
-    id: "jordan-swift-v2",
-    userId: "jordan-swift-v2",
-    organizationId: "f1-racing-hub-2024",
-    name: "Jordan Swift",
-    email: "jordan@velocityteam.com",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=JordanSwift&backgroundColor=ffdfbf,ffd5dc,d1d4f9",
-    initials: "JS",
-    color: "#00BCD4" // Mercedes cyan
-  },
-]
-
-const DOCUMENT_ID = "f1-dashboard-v2-2024"
-
 export function UserSwitcher() {
   const [open, setOpen] = React.useState(false)
-  const [selectedUser, setSelectedUser] = React.useState(users[0])
-  const { client } = useVeltClient()
+  const { currentUser, setCurrentUser, users } = useUser()
 
-  // Initialize with first user on mount
-  React.useEffect(() => {
-    if (client && selectedUser) {
-      const initializeUser = async () => {
-        try {
-          await client.identify({
-            userId: selectedUser.userId,
-            organizationId: selectedUser.organizationId,
-            name: selectedUser.name,
-            email: selectedUser.email,
-            photoUrl: selectedUser.avatar
-          })
-
-          // Set document after user identification
-          await client.setDocument(DOCUMENT_ID, {
-            documentName: 'F1 Favorites Dashboard'
-          })
-        } catch (error) {
-          console.error('Failed to initialize user:', error)
-        }
-      }
-
-      initializeUser()
-    }
-  }, [client]) // Only run once when client is available
-
-  const handleUserSelect = async (user: typeof users[0]) => {
-    if (!client) return
-
-    try {
-      // Sign out current user first
-      await client.signOutUser()
-
-      // Identify new user
-      await client.identify({
-        userId: user.userId,
-        organizationId: user.organizationId,
-        name: user.name,
-        email: user.email,
-        photoUrl: user.avatar
-      })
-
-      // Re-set document for new user
-      await client.setDocument(DOCUMENT_ID, {
-        documentName: 'F1 Favorites Dashboard'
-      })
-
-      // Update local state
-      setSelectedUser(user)
-      setOpen(false)
-    } catch (error) {
-      console.error('Failed to switch user:', error)
-    }
+  const handleUserSelect = (user: typeof users[0]) => {
+    setCurrentUser(user)
+    setOpen(false)
   }
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log('Toggle clicked, current open state:', open)
     setOpen(!open)
   }
-
-  React.useEffect(() => {
-    console.log('UserSwitcher open state changed:', open)
-  }, [open])
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -130,12 +48,12 @@ export function UserSwitcher() {
         onClick={handleToggle}
       >
         <Avatar className="w-8 h-8">
-          <AvatarImage src={selectedUser.avatar || "/placeholder.svg"} alt={selectedUser.name} />
+          <AvatarImage src={currentUser.avatar || "/placeholder.svg"} alt={currentUser.name} />
           <AvatarFallback
             className="text-white font-medium"
-            style={{ backgroundColor: selectedUser.color }}
+            style={{ backgroundColor: currentUser.color }}
           >
-            {selectedUser.initials}
+            {currentUser.initials}
           </AvatarFallback>
         </Avatar>
         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -164,7 +82,7 @@ export function UserSwitcher() {
                   <span className="font-medium">{user.name}</span>
                   <span className="text-xs text-muted-foreground">{user.email}</span>
                 </div>
-                <Check className={`h-4 w-4 ${selectedUser.id === user.id ? "opacity-100" : "opacity-0"}`} />
+                <Check className={`h-4 w-4 ${currentUser.id === user.id ? "opacity-100" : "opacity-0"}`} />
               </button>
             ))}
             <div className="border-t border-border mt-1 pt-1">

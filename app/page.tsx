@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/dashboard-layout"
-import { RaceSessionsTable } from "@/components/race-sessions-table"
+import { RaceSessionsTable } from "@/components/race-sessions-wrapper"
 
 export default function HomePage() {
   return (

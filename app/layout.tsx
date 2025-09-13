@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { VeltWrapper } from "@/components/velt-wrapper"
+import { UserProviderWrapper } from "@/components/user-provider-wrapper"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -23,9 +24,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <VeltWrapper>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <Suspense fallback={null}>{children}</Suspense>
-          </ThemeProvider>
+          <UserProviderWrapper>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+              <Suspense fallback={null}>{children}</Suspense>
+            </ThemeProvider>
+          </UserProviderWrapper>
         </VeltWrapper>
         <Analytics />
       </body>
