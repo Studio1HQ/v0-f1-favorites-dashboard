@@ -10,6 +10,12 @@ import { BarChart3, Car, Users, Calendar, Menu, Search, Bell, Settings, Heart } 
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { UserSwitcher } from "@/components/user-switcher"
+import dynamic from 'next/dynamic'
+
+const VeltPresence = dynamic(
+  () => import('@veltdev/react').then((mod) => ({ default: mod.VeltPresence })),
+  { ssr: false }
+)
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -122,6 +128,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               </div>
 
               <div className="flex items-center space-x-4">
+                {/* Velt Presence Indicator */}
+                <div className="flex items-center">
+                  <VeltPresence
+                    flockMode={true}
+                    maxUsers={2}
+                  />
+                </div>
                 <ThemeToggle />
                 <Button variant="ghost" size="sm">
                   <Bell className="w-5 h-5" />
