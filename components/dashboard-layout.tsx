@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { UserSwitcher } from "@/components/user-switcher"
 import dynamic from 'next/dynamic'
+import { VeltCommentsSidebar, VeltSidebarButton } from "@veltdev/react"
 
 const VeltPresence = dynamic(
   () => import('@veltdev/react').then((mod) => ({ default: mod.VeltPresence })),
@@ -37,6 +38,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Sidebar */}
+      <VeltCommentsSidebar />
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform duration-200 ease-in-out",
@@ -139,6 +141,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Button variant="ghost" size="sm">
                   <Bell className="w-5 h-5" />
                 </Button>
+                <VeltSidebarButton />
                 <UserSwitcher />
               </div>
             </div>

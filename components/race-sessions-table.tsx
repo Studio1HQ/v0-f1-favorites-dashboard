@@ -7,9 +7,24 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Search, Filter, Calendar, MapPin, Clock, Flag, RefreshCw, AlertCircle, X, Heart } from "lucide-react"
+import { Search, Filter, Calendar, MapPin, Clock, Flag, RefreshCw, AlertCircle, X, Heart, MessageSquare } from "lucide-react"
 import { useSessions } from "@/hooks/use-sessions"
 import { useFavorites } from "@/hooks/use-favorites" // Added favorites hook
+import { useUser } from "@/contexts/user-context"
+import { useVeltClient } from '@veltdev/react'
+import dynamic from 'next/dynamic'
+import { useEffect } from 'react'
+
+// Dynamic imports for Velt components to prevent SSR issues
+const VeltComments = dynamic(
+  () => import('@veltdev/react').then((mod) => ({ default: mod.VeltComments })),
+  { ssr: false }
+)
+
+const VeltCommentTool = dynamic(
+  () => import('@veltdev/react').then((mod) => ({ default: mod.VeltCommentTool })),
+  { ssr: false }
+)
 
 function getSessionTypeColor(sessionType: string) {
   switch (sessionType.toLowerCase()) {
@@ -51,6 +66,25 @@ export function RaceSessionsTable() {
   const [searchTerm, setSearchTerm] = useState("")
   const [sessionTypeFilter, setSessionTypeFilter] = useState("all")
   const [countryFilter, setCountryFilter] = useState("all")
+
+  const { users } = useUser()
+  const { client } = useVeltClient()
+
+  // Configure comment mentions to only show our two users
+  useEffect(() => {
+    if (client) {
+      // Configure mentions to only show the two F1 users
+      const contactList = users.map(user => ({
+        userId: user.userId,
+        name: user.name,
+        email: user.email,
+        photoUrl: user.avatar
+      }))
+
+      // Update contact list to restrict to our two users
+      client.updateContactList(contactList)
+    }
+  }, [client, users])
 
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
@@ -348,6 +382,13 @@ export function RaceSessionsTable() {
                         >
                           <Heart className={`w-4 h-4 ${isFavorite(session.session_key) ? "fill-current" : ""}`} />
                         </Button>
+                        <VeltCommentTool
+                          targetElementId={`session-${session.session_key}`}
+                        >
+                          <Button variant="ghost" size="sm" className="h-8">
+                            <MessageSquare className="w-4 h-4" />
+                          </Button>
+                        </VeltCommentTool>
                         <Button variant="ghost" size="sm" className="h-8">
                           <Flag className="w-4 h-4 mr-2" />
                           View Details
@@ -360,6 +401,9 @@ export function RaceSessionsTable() {
             </TableBody>
           </Table>
         </div>
+
+        {/* Velt Comments Container */}
+        <VeltComments />
 
         <div className="mt-8 p-6 bg-gradient-to-r from-muted/30 to-muted/10 rounded-xl border border-dashed">
           <div className="flex items-center gap-4">
