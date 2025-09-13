@@ -32,28 +32,53 @@ export function useFavorites() {
 
   const [loading, setLoading] = useState(true)
 
-  // Set loading to false once we have initial data
+  // More intelligent loading management
   useEffect(() => {
-    // Small delay to allow Velt to initialize
+    // Load backup from localStorage immediately
+    const loadBackup = () => {
+      try {
+        const stored = localStorage.getItem(FAVORITES_STORAGE_KEY)
+        if (stored && favorites.length === 0) {
+          const parsedFavorites = JSON.parse(stored)
+          console.log('Loading favorites backup:', parsedFavorites.length)
+        }
+      } catch (error) {
+        console.error("Error loading favorites backup:", error)
+      }
+    }
+
+    loadBackup()
+
+    // Set a reasonable loading timeout
     const timer = setTimeout(() => {
       setLoading(false)
-    }, 500)
+      console.log('Favorites loading timeout reached, current count:', favorites.length)
+    }, 1000)
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [favorites.length])
 
-  // Backup to localStorage (but Velt is primary)
+  // Always backup to localStorage when favorites change
   useEffect(() => {
-    if (!loading && favorites.length > 0) {
+    if (favorites.length > 0) {
       try {
         localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites))
+        console.log('Favorites backed up to localStorage:', favorites.length)
       } catch (error) {
         console.error("Error saving favorites backup:", error)
       }
     }
-  }, [favorites, loading])
+  }, [favorites])
+
+  // Stop loading once we have Velt data or after timeout
+  useEffect(() => {
+    if (favorites.length > 0 || serverConnectionState === 'connected') {
+      setLoading(false)
+    }
+  }, [favorites.length, serverConnectionState])
 
   const addToFavorites = useCallback((session: Session) => {
+    console.log(`Adding favorite: ${session.session_name} (${session.session_key})`)
     const favoriteSession: FavoriteSession = {
       session_key: session.session_key,
       session_name: session.session_name,
@@ -67,17 +92,28 @@ export function useFavorites() {
 
     // Check if already exists before adding
     if (!favorites.some((fav) => fav.session_key === session.session_key)) {
-      setFavorites([...favorites, favoriteSession])
+      const newFavorites = [...favorites, favoriteSession]
+      console.log(`Total favorites after adding: ${newFavorites.length}`)
+      setFavorites(newFavorites)
+    } else {
+      console.log(`Session ${session.session_key} already in favorites`)
     }
   }, [favorites, setFavorites])
 
   const removeFromFavorites = useCallback((sessionKey: number) => {
-    setFavorites(favorites.filter((fav) => fav.session_key !== sessionKey))
+    console.log(`Removing favorite: ${sessionKey}`)
+    const newFavorites = favorites.filter((fav) => fav.session_key !== sessionKey)
+    console.log(`Total favorites after removing: ${newFavorites.length}`)
+    setFavorites(newFavorites)
   }, [favorites, setFavorites])
 
   const isFavorite = useCallback(
     (sessionKey: number) => {
-      return favorites.some((fav) => fav.session_key === sessionKey)
+      const result = favorites.some((fav) => fav.session_key === sessionKey)
+      if (result) {
+        console.log(`Session ${sessionKey} is favorited, total favorites: ${favorites.length}`)
+      }
+      return result
     },
     [favorites],
   )
@@ -93,6 +129,9 @@ export function useFavorites() {
     },
     [favorites],
   )
+
+  // Log the current state for debugging
+  console.log(`Favorites hook state: ${favorites.length} favorites, loading: ${loading}, connection: ${serverConnectionState}`)
 
   return {
     favorites,
