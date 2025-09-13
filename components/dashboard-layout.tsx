@@ -10,6 +10,7 @@ import { BarChart3, Car, Users, Calendar, Menu, Search, Bell, Settings, Heart } 
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { UserSwitcher } from "@/components/user-switcher"
+import { useTheme } from "next-themes"
 import dynamic from 'next/dynamic'
 import { VeltCommentsSidebar, VeltSidebarButton } from "@veltdev/react"
 
@@ -34,11 +35,15 @@ const navigation = [
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
+  const { theme, systemTheme } = useTheme()
+
+  // Determine if current theme is dark
+  const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
   return (
     <div className="min-h-screen bg-background">
       {/* Sidebar */}
-      <VeltCommentsSidebar />
+      <VeltCommentsSidebar darkMode={isDarkMode} />
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 bg-sidebar border-r border-sidebar-border transform transition-transform duration-200 ease-in-out",
@@ -141,7 +146,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Button variant="ghost" size="sm">
                   <Bell className="w-5 h-5" />
                 </Button>
-                <VeltSidebarButton />
+                <VeltSidebarButton darkMode={isDarkMode} />
                 <UserSwitcher />
               </div>
             </div>

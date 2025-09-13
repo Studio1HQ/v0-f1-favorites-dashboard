@@ -12,6 +12,7 @@ import { useSessions } from "@/hooks/use-sessions"
 import { useFavorites } from "@/hooks/use-favorites" // Added favorites hook
 import { useUser } from "@/contexts/user-context"
 import { useVeltClient } from '@veltdev/react'
+import { useTheme } from "next-themes"
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 
@@ -69,6 +70,10 @@ export function RaceSessionsTable() {
 
   const { users } = useUser()
   const { client } = useVeltClient()
+  const { theme, systemTheme } = useTheme()
+
+  // Determine if current theme is dark
+  const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
   // Configure comment mentions to only show our two users
   useEffect(() => {
@@ -85,6 +90,20 @@ export function RaceSessionsTable() {
       client.updateContactList(contactList)
     }
   }, [client, users])
+
+  // Configure dark mode for comments using API
+  useEffect(() => {
+    if (client) {
+      const commentElement = client.getCommentElement()
+      if (commentElement) {
+        if (isDarkMode) {
+          commentElement.enableDarkMode()
+        } else {
+          commentElement.disableDarkMode()
+        }
+      }
+    }
+  }, [client, isDarkMode])
 
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
@@ -384,6 +403,9 @@ export function RaceSessionsTable() {
                         </Button>
                         <VeltCommentTool
                           targetElementId={`session-${session.session_key}`}
+                          darkMode={isDarkMode}
+                          textCommentToolDarkMode={isDarkMode}
+                          pinDarkMode={isDarkMode}
                         >
                           <Button variant="ghost" size="sm" className="h-8">
                             <MessageSquare className="w-4 h-4" />
@@ -403,7 +425,11 @@ export function RaceSessionsTable() {
         </div>
 
         {/* Velt Comments Container */}
-        <VeltComments />
+        <VeltComments
+          darkMode={isDarkMode}
+          dialogDarkMode={isDarkMode}
+          pinDarkMode={isDarkMode}
+        />
 
         <div className="mt-8 p-6 bg-gradient-to-r from-muted/30 to-muted/10 rounded-xl border border-dashed">
           <div className="flex items-center gap-4">
