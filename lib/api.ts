@@ -50,7 +50,6 @@ export async function fetchSessions(params?: {
   year?: number
   session_name?: string
   country_name?: string
-  limit?: number
 }): Promise<Session[]> {
   try {
     const searchParams = new URLSearchParams()
@@ -63,9 +62,6 @@ export async function fetchSessions(params?: {
     }
     if (params?.country_name) {
       searchParams.append("country_name", params.country_name)
-    }
-    if (params?.limit) {
-      searchParams.append("limit", params.limit.toString())
     }
 
     const url = `${OPENF1_BASE_URL}/sessions?${searchParams.toString()}`
@@ -191,7 +187,7 @@ export async function fetchRecentSessions(): Promise<Session[]> {
 
     for (const year of yearsToTry) {
       try {
-        const yearSessions = await fetchSessions({ year, limit: 50 })
+        const yearSessions = await fetchSessions({ year })
         console.log(`[v0] Found ${yearSessions.length} sessions for year ${year}`)
         sessions.push(...yearSessions)
 
@@ -208,7 +204,7 @@ export async function fetchRecentSessions(): Promise<Session[]> {
     // If no sessions found, try fetching without year filter to get latest available data
     if (sessions.length === 0) {
       console.log("[v0] Trying to fetch latest sessions without year filter...")
-      const latestSessions = await fetchSessions({ limit: 50 })
+      const latestSessions = await fetchSessions()
       sessions.push(...latestSessions)
     }
 

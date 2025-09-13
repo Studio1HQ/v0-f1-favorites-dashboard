@@ -6,8 +6,10 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { BarChart3, Car, Users, Calendar, Menu, Search, Bell, Settings } from "lucide-react"
+import { BarChart3, Car, Users, Calendar, Menu, Search, Bell, Settings, Heart } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { UserSwitcher } from "@/components/user-switcher"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -16,6 +18,7 @@ interface DashboardLayoutProps {
 const navigation = [
   { name: "Dashboard", href: "/", icon: BarChart3 },
   { name: "Race Sessions", href: "/", icon: Calendar },
+  { name: "Favorites", href: "/favorites", icon: Heart }, // Added favorites navigation item
   { name: "Drivers", href: "/drivers", icon: Users },
   { name: "Cars", href: "/cars", icon: Car },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
@@ -119,13 +122,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               </div>
 
               <div className="flex items-center space-x-4">
+                <ThemeToggle />
                 <Button variant="ghost" size="sm">
                   <Bell className="w-5 h-5" />
                 </Button>
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src="/diverse-user-avatars.png" />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
+                <UserSwitcher />
               </div>
             </div>
           </div>
