@@ -34,29 +34,36 @@ export function useFavorites() {
 
   // More intelligent loading management
   useEffect(() => {
-    // Load backup from localStorage immediately
+    // Load backup from localStorage immediately and initialize live state
     const loadBackup = () => {
       try {
         const stored = localStorage.getItem(FAVORITES_STORAGE_KEY)
         if (stored && favorites.length === 0) {
-          const parsedFavorites = JSON.parse(stored)
+          const parsedFavorites = JSON.parse(stored) as FavoriteSession[]
           console.log('Loading favorites backup:', parsedFavorites.length)
+          // Initialize the live state with localStorage data
+          if (parsedFavorites.length > 0) {
+            setFavorites(parsedFavorites)
+          }
         }
       } catch (error) {
         console.error("Error loading favorites backup:", error)
       }
     }
 
-    loadBackup()
+    // Only load backup if favorites is empty (initial load)
+    if (favorites.length === 0) {
+      loadBackup()
+    }
 
     // Set a reasonable loading timeout
     const timer = setTimeout(() => {
       setLoading(false)
       console.log('Favorites loading timeout reached, current count:', favorites.length)
-    }, 1000)
+    }, 500) // Reduced timeout since we're loading from localStorage
 
     return () => clearTimeout(timer)
-  }, [favorites.length])
+  }, [favorites.length, setFavorites])
 
   // Always backup to localStorage when favorites change
   useEffect(() => {
@@ -70,9 +77,10 @@ export function useFavorites() {
     }
   }, [favorites])
 
-  // Stop loading once we have Velt data or after timeout
+  // Stop loading once we have data or connection is established
   useEffect(() => {
-    if (favorites.length > 0 || serverConnectionState === 'connected') {
+    // Stop loading when we have favorites or when Velt is connected (even with 0 favorites)
+    if (favorites.length > 0 || serverConnectionState === 'connected' || serverConnectionState === 'disconnected') {
       setLoading(false)
     }
   }, [favorites.length, serverConnectionState])
@@ -94,7 +102,17 @@ export function useFavorites() {
     if (!favorites.some((fav) => fav.session_key === session.session_key)) {
       const newFavorites = [...favorites, favoriteSession]
       console.log(`Total favorites after adding: ${newFavorites.length}`)
+
+      // Update both live state and localStorage immediately
       setFavorites(newFavorites)
+
+      // Also update localStorage immediately as a backup
+      try {
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(newFavorites))
+        console.log('Favorites immediately saved to localStorage')
+      } catch (error) {
+        console.error("Error saving favorites to localStorage:", error)
+      }
     } else {
       console.log(`Session ${session.session_key} already in favorites`)
     }
@@ -104,7 +122,17 @@ export function useFavorites() {
     console.log(`Removing favorite: ${sessionKey}`)
     const newFavorites = favorites.filter((fav) => fav.session_key !== sessionKey)
     console.log(`Total favorites after removing: ${newFavorites.length}`)
+
+    // Update both live state and localStorage immediately
     setFavorites(newFavorites)
+
+    // Also update localStorage immediately as a backup
+    try {
+      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(newFavorites))
+      console.log('Favorites immediately saved to localStorage after removal')
+    } catch (error) {
+      console.error("Error saving favorites to localStorage:", error)
+    }
   }, [favorites, setFavorites])
 
   const isFavorite = useCallback(
