@@ -348,7 +348,11 @@ export function RaceSessionsTable() {
                 </TableRow>
               ) : (
                 filteredSessions.map((session, index) => (
-                  <TableRow key={session.session_key} className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50 transition-colors">
+                  <TableRow
+                    key={session.session_key}
+                    id={`session-row-${session.session_key}`}
+                    className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50 transition-colors"
+                  >
                     <TableCell className="py-4 px-6">
                       <div className="flex items-center gap-3">
                         <CountryFlag
@@ -403,7 +407,7 @@ export function RaceSessionsTable() {
                           <Heart className={`w-4 h-4 ${isFavorite(session.session_key) ? "fill-current" : ""}`} />
                         </Button>
                         <VeltCommentTool
-                          targetElementId={`session-${session.session_key}`}
+                          targetElementId={`session-row-${session.session_key}`}
                           darkMode={isDarkMode}
                         >
                           <Button variant="ghost" size="sm" className="h-8 text-slate-200 dark:text-slate-400 hover:text-white dark:hover:text-slate-200">
@@ -429,6 +433,8 @@ export function RaceSessionsTable() {
           dialogDarkMode={isDarkMode}
           pinDarkMode={isDarkMode}
           textMode={false}
+          popoverMode={true}
+          popoverTriangleComponent={true}
         />
 
         <div className="px-6 py-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
