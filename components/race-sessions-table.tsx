@@ -302,44 +302,44 @@ export function RaceSessionsTable() {
       </div>
 
       <div className="overflow-hidden">
-        <div className="bg-slate-700 dark:bg-slate-900 border-y border-slate-500 dark:border-slate-700">
+        <div className="bg-slate-100 dark:bg-slate-900 border-y border-slate-300 dark:border-slate-700">
           <Table>
             <TableHeader>
-              <TableRow className="border-b border-slate-500 dark:border-slate-700 hover:bg-transparent">
-                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 px-6">GRAND PRIX</TableHead>
-                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">DATE</TableHead>
-                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">WINNER</TableHead>
-                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TEAM</TableHead>
-                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">LAPS</TableHead>
-                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TIME</TableHead>
-                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 text-right">ACTIONS</TableHead>
+              <TableRow className="border-b border-slate-300 dark:border-slate-700 hover:bg-transparent">
+                <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 px-6">GRAND PRIX</TableHead>
+                <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">DATE</TableHead>
+                <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">WINNER</TableHead>
+                <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TEAM</TableHead>
+                <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">LAPS</TableHead>
+                <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TIME</TableHead>
+                <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 text-right">ACTIONS</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="bg-slate-700 dark:bg-slate-900">
+            <TableBody className="bg-white dark:bg-slate-900">
               {loading ? (
-                <TableRow className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50">
+                <TableRow className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50">
                   <TableCell colSpan={7} className="text-center py-16">
                     <div className="flex flex-col items-center gap-4">
                       <div className="p-4 bg-red-900/20 rounded-full">
                         <RefreshCw className="w-8 h-8 animate-spin text-red-400" />
                       </div>
                       <div className="space-y-2">
-                        <p className="font-medium text-white">Loading sessions...</p>
-                        <p className="text-sm text-slate-300 dark:text-slate-400">Fetching data from OpenF1 API</p>
+                        <p className="font-medium text-slate-900 dark:text-white">Loading sessions...</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">Fetching data from OpenF1 API</p>
                       </div>
                     </div>
                   </TableCell>
                 </TableRow>
               ) : filteredSessions.length === 0 ? (
-                <TableRow className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50">
+                <TableRow className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50">
                   <TableCell colSpan={7} className="text-center py-16">
                     <div className="flex flex-col items-center gap-4">
-                      <div className="p-4 bg-slate-700 dark:bg-slate-800 rounded-full">
+                      <div className="p-4 bg-slate-200 dark:bg-slate-800 rounded-full">
                         <Calendar className="w-8 h-8 text-slate-300 dark:text-slate-400" />
                       </div>
                       <div className="space-y-2">
-                        <p className="font-medium text-white">No sessions found</p>
-                        <p className="text-sm text-slate-300 dark:text-slate-400">
+                        <p className="font-medium text-slate-900 dark:text-white">No sessions found</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
                           {hasActiveFilters ? "Try adjusting your filters" : "No data available"}
                         </p>
                       </div>
@@ -356,7 +356,7 @@ export function RaceSessionsTable() {
                   <TableRow
                     key={session.session_key}
                     id={`session-row-${session.session_key}`}
-                    className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50 transition-colors"
+                    className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                   >
                     <TableCell className="py-4 px-6">
                       <div className="flex items-center gap-3">
@@ -365,10 +365,10 @@ export function RaceSessionsTable() {
                           className="w-6 h-4 rounded-sm overflow-hidden shadow-sm"
                           title={session.country_name || session.location}
                         />
-                        <span className="text-white font-medium">{session.country_name || session.location}</span>
+                        <span className="text-slate-900 dark:text-white font-medium">{session.country_name || session.location}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="py-4 text-slate-100 dark:text-slate-300">
+                    <TableCell className="py-4 text-slate-900 dark:text-slate-300">
                       {formatDate(session.date_start).replace(/,/, '')}
                     </TableCell>
                     <TableCell className="py-4">
@@ -376,7 +376,7 @@ export function RaceSessionsTable() {
                         <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">W</span>
                         </div>
-                        <span className="text-orange-200 dark:text-orange-400 font-medium">
+                        <span className="text-orange-600 dark:text-orange-400 font-medium">
                           {session.session_type === 'Race' ? 'Winner TBD' : `${session.session_type} Session`}
                         </span>
                       </div>
@@ -386,15 +386,15 @@ export function RaceSessionsTable() {
                         <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">T</span>
                         </div>
-                        <span className="text-orange-200 dark:text-orange-400 font-medium">
+                        <span className="text-orange-600 dark:text-orange-400 font-medium">
                           {session.session_type === 'Race' ? 'Team TBD' : session.session_type}
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="py-4 text-slate-100 dark:text-slate-300">
+                    <TableCell className="py-4 text-slate-900 dark:text-slate-300">
                       {session.session_type === 'Race' ? '57' : '--'}
                     </TableCell>
-                    <TableCell className="py-4 text-slate-200 dark:text-slate-300 font-mono text-sm">
+                    <TableCell className="py-4 text-slate-900 dark:text-slate-300 font-mono text-sm">
                       {session.session_type === 'Race' ? '1:42:06.304' : formatTime(session.date_start)}
                     </TableCell>
                     <TableCell className="text-right py-4">
@@ -406,7 +406,7 @@ export function RaceSessionsTable() {
                           className={`h-8 ${
                             isFavorite(session.session_key)
                               ? "text-red-400 hover:text-red-300"
-                              : "text-slate-200 dark:text-slate-400 hover:text-white dark:hover:text-slate-200"
+                              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                           }`}
                         >
                           <Heart className={`w-4 h-4 ${isFavorite(session.session_key) ? "fill-current" : ""}`} />
@@ -416,7 +416,7 @@ export function RaceSessionsTable() {
                             targetElementId={`session-row-${session.session_key}`}
                             darkMode={isDarkMode}
                           >
-                            <Button variant="ghost" size="sm" className="h-8 text-slate-200 dark:text-slate-400 hover:text-white dark:hover:text-slate-200">
+                            <Button variant="ghost" size="sm" className="h-8 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
                               <MessageSquare className="w-4 h-4" />
                             </Button>
                           </VeltCommentTool>
@@ -425,7 +425,7 @@ export function RaceSessionsTable() {
                             darkMode={isDarkMode}
                           />
                         </div>
-                        <Button variant="ghost" size="sm" className="h-8 text-slate-300 dark:text-slate-400 hover:text-slate-100 dark:hover:text-slate-200">
+                        <Button variant="ghost" size="sm" className="h-8 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
                           <Flag className="w-4 h-4 mr-1" />
                           <span className="text-xs">Details</span>
                         </Button>
