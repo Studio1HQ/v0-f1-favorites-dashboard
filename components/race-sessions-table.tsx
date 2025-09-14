@@ -28,6 +28,11 @@ const VeltCommentTool = dynamic(
   { ssr: false }
 )
 
+const VeltCommentBubble = dynamic(
+  () => import('@veltdev/react').then((mod) => ({ default: mod.VeltCommentBubble })),
+  { ssr: false }
+)
+
 function getSessionTypeColor(sessionType: string) {
   switch (sessionType.toLowerCase()) {
     case "race":
@@ -406,14 +411,20 @@ export function RaceSessionsTable() {
                         >
                           <Heart className={`w-4 h-4 ${isFavorite(session.session_key) ? "fill-current" : ""}`} />
                         </Button>
-                        <VeltCommentTool
-                          targetElementId={`session-row-${session.session_key}`}
-                          darkMode={isDarkMode}
-                        >
-                          <Button variant="ghost" size="sm" className="h-8 text-slate-200 dark:text-slate-400 hover:text-white dark:hover:text-slate-200">
-                            <MessageSquare className="w-4 h-4" />
-                          </Button>
-                        </VeltCommentTool>
+                        <div className="relative">
+                          <VeltCommentTool
+                            targetElementId={`session-row-${session.session_key}`}
+                            darkMode={isDarkMode}
+                          >
+                            <Button variant="ghost" size="sm" className="h-8 text-slate-200 dark:text-slate-400 hover:text-white dark:hover:text-slate-200">
+                              <MessageSquare className="w-4 h-4" />
+                            </Button>
+                          </VeltCommentTool>
+                          <VeltCommentBubble
+                            targetElementId={`session-row-${session.session_key}`}
+                            darkMode={isDarkMode}
+                          />
+                        </div>
                         <Button variant="ghost" size="sm" className="h-8 text-slate-300 dark:text-slate-400 hover:text-slate-100 dark:hover:text-slate-200">
                           <Flag className="w-4 h-4 mr-1" />
                           <span className="text-xs">Details</span>
