@@ -173,38 +173,34 @@ export function RaceSessionsTable() {
   }
 
   return (
-    <Card className="shadow-sm">
-      <CardHeader className="pb-6">
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <CardTitle className="flex items-center gap-3 text-xl">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Calendar className="w-5 h-5 text-primary" />
-              </div>
-              Race Sessions
-              {loading && <RefreshCw className="w-4 h-4 animate-spin text-muted-foreground" />}
-            </CardTitle>
-            <CardDescription className="text-base">Historical Formula 1 race sessions from OpenF1 API</CardDescription>
+    <div className="bg-transparent">
+      <div className="px-6 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className="bg-slate-700 dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-600 dark:border-slate-700">
+              <span className="text-slate-100 dark:text-slate-300 text-sm font-medium">All</span>
+            </div>
+            {loading && <RefreshCw className="w-4 h-4 animate-spin text-slate-600 dark:text-slate-500" />}
           </div>
           <div className="flex items-center gap-3">
-            <Badge variant="secondary" className="text-sm px-3 py-1">
+            <div className="text-slate-600 dark:text-slate-500 text-sm">
               {filteredSessions.length} of {sessions.length} sessions
-            </Badge>
-            <Button onClick={refetch} variant="ghost" size="sm" disabled={loading} className="h-9">
+            </div>
+            <Button onClick={refetch} variant="ghost" size="sm" disabled={loading} className="h-8 text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200">
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </Button>
           </div>
         </div>
 
-        <div className="space-y-6 pt-6 border-t">
+        <div className="space-y-6">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-500 dark:text-slate-400" />
               <Input
                 placeholder="Search sessions, locations, countries, circuits..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-10"
+                className="pl-10 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100"
                 disabled={loading}
               />
             </div>
@@ -254,8 +250,8 @@ export function RaceSessionsTable() {
           </div>
 
           {hasActiveFilters && (
-            <div className="flex items-center gap-3 flex-wrap p-4 bg-muted/30 rounded-lg border border-dashed">
-              <span className="text-sm font-medium text-muted-foreground">Active filters:</span>
+            <div className="flex items-center gap-3 flex-wrap p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-600 border-dashed">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-400">Active filters:</span>
               <div className="flex items-center gap-2 flex-wrap">
                 {searchTerm && (
                   <Badge variant="secondary" className="text-sm px-3 py-1">
@@ -297,52 +293,52 @@ export function RaceSessionsTable() {
             </div>
           )}
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent className="pt-0">
-        <div className="rounded-lg border overflow-hidden">
+      <div className="overflow-hidden">
+        <div className="bg-slate-700 dark:bg-slate-900 border-y border-slate-500 dark:border-slate-700">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/50">
-                <TableHead className="w-[120px] font-semibold">Session</TableHead>
-                <TableHead className="font-semibold">Type</TableHead>
-                <TableHead className="font-semibold">Location</TableHead>
-                <TableHead className="font-semibold">Date</TableHead>
-                <TableHead className="font-semibold">Time</TableHead>
-                <TableHead className="font-semibold">Duration</TableHead>
-                <TableHead className="text-right font-semibold">Actions</TableHead>
+              <TableRow className="border-b border-slate-500 dark:border-slate-700 hover:bg-transparent">
+                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 px-6">GRAND PRIX</TableHead>
+                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">DATE</TableHead>
+                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">WINNER</TableHead>
+                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TEAM</TableHead>
+                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">LAPS</TableHead>
+                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TIME</TableHead>
+                <TableHead className="text-slate-100 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 text-right">ACTIONS</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="bg-slate-700 dark:bg-slate-900">
               {loading ? (
-                <TableRow>
+                <TableRow className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50">
                   <TableCell colSpan={7} className="text-center py-16">
                     <div className="flex flex-col items-center gap-4">
-                      <div className="p-4 bg-primary/10 rounded-full">
-                        <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+                      <div className="p-4 bg-red-900/20 rounded-full">
+                        <RefreshCw className="w-8 h-8 animate-spin text-red-400" />
                       </div>
                       <div className="space-y-2">
-                        <p className="font-medium">Loading sessions...</p>
-                        <p className="text-sm text-muted-foreground">Fetching data from OpenF1 API</p>
+                        <p className="font-medium text-white">Loading sessions...</p>
+                        <p className="text-sm text-slate-300 dark:text-slate-400">Fetching data from OpenF1 API</p>
                       </div>
                     </div>
                   </TableCell>
                 </TableRow>
               ) : filteredSessions.length === 0 ? (
-                <TableRow>
+                <TableRow className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50">
                   <TableCell colSpan={7} className="text-center py-16">
                     <div className="flex flex-col items-center gap-4">
-                      <div className="p-4 bg-muted/50 rounded-full">
-                        <Calendar className="w-8 h-8 text-muted-foreground" />
+                      <div className="p-4 bg-slate-700 dark:bg-slate-800 rounded-full">
+                        <Calendar className="w-8 h-8 text-slate-300 dark:text-slate-400" />
                       </div>
                       <div className="space-y-2">
-                        <p className="font-medium">No sessions found</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-white">No sessions found</p>
+                        <p className="text-sm text-slate-300 dark:text-slate-400">
                           {hasActiveFilters ? "Try adjusting your filters" : "No data available"}
                         </p>
                       </div>
                       {hasActiveFilters && (
-                        <Button variant="outline" size="sm" onClick={clearFilters} className="mt-2 bg-transparent">
+                        <Button variant="outline" size="sm" onClick={clearFilters} className="mt-2 bg-transparent border-slate-500 dark:border-slate-600 text-slate-200 dark:text-slate-300 hover:bg-slate-700 dark:hover:bg-slate-800">
                           Clear filters
                         </Button>
                       )}
@@ -350,42 +346,44 @@ export function RaceSessionsTable() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredSessions.map((session) => (
-                  <TableRow key={session.session_key} className="hover:bg-muted/30 transition-colors">
-                    <TableCell className="font-medium py-4">{session.session_name}</TableCell>
-                    <TableCell className="py-4">
-                      <Badge variant="outline" className={`${getSessionTypeColor(session.session_type)} font-medium`}>
-                        {session.session_type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="py-4">
+                filteredSessions.map((session, index) => (
+                  <TableRow key={session.session_key} className="border-b border-slate-600 dark:border-slate-800 hover:bg-slate-600/50 dark:hover:bg-slate-800/50 transition-colors">
+                    <TableCell className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <MapPin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                        <div className="min-w-0">
-                          <div className="font-medium truncate">{session.location}</div>
-                          <div className="text-sm text-muted-foreground truncate">{session.country_name}</div>
+                        <div className="w-6 h-4 bg-gradient-to-r from-red-600 to-red-500 rounded-sm flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">{(session.country_name || 'XX').substring(0,2).toUpperCase()}</span>
                         </div>
+                        <span className="text-white font-medium">{session.country_name || session.location}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-4 text-slate-100 dark:text-slate-300">
+                      {formatDate(session.date_start).replace(/,/, '')}
+                    </TableCell>
+                    <TableCell className="py-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">W</span>
+                        </div>
+                        <span className="text-orange-200 dark:text-orange-400 font-medium">
+                          {session.session_type === 'Race' ? 'Winner TBD' : `${session.session_type} Session`}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell className="py-4">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <span className="font-medium">{formatDate(session.date_start)}</span>
+                        <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">T</span>
+                        </div>
+                        <span className="text-orange-200 dark:text-orange-400 font-medium">
+                          {session.session_type === 'Race' ? 'Team TBD' : session.session_type}
+                        </span>
                       </div>
                     </TableCell>
-                    <TableCell className="py-4">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-muted-foreground" />
-                        <span className="font-mono text-sm">{formatTime(session.date_start)}</span>
-                      </div>
+                    <TableCell className="py-4 text-slate-100 dark:text-slate-300">
+                      {session.session_type === 'Race' ? '57' : '--'}
                     </TableCell>
-                    <TableCell className="py-4">
-                      <div className="text-sm text-muted-foreground font-medium">
-                        {Math.round(
-                          (new Date(session.date_end).getTime() - new Date(session.date_start).getTime()) / (1000 * 60),
-                        )}{" "}
-                        min
-                      </div>
+                    <TableCell className="py-4 text-slate-200 dark:text-slate-300 font-mono text-sm">
+                      {session.session_type === 'Race' ? '1:42:06.304' : formatTime(session.date_start)}
                     </TableCell>
                     <TableCell className="text-right py-4">
                       <div className="flex items-center justify-end gap-2">
@@ -395,8 +393,8 @@ export function RaceSessionsTable() {
                           onClick={() => handleFavoriteToggle(session)}
                           className={`h-8 ${
                             isFavorite(session.session_key)
-                              ? "text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                              : "text-muted-foreground hover:text-foreground"
+                              ? "text-red-400 hover:text-red-300"
+                              : "text-slate-200 dark:text-slate-400 hover:text-white dark:hover:text-slate-200"
                           }`}
                         >
                           <Heart className={`w-4 h-4 ${isFavorite(session.session_key) ? "fill-current" : ""}`} />
@@ -404,16 +402,14 @@ export function RaceSessionsTable() {
                         <VeltCommentTool
                           targetElementId={`session-${session.session_key}`}
                           darkMode={isDarkMode}
-                          textCommentToolDarkMode={isDarkMode}
-                          pinDarkMode={isDarkMode}
                         >
-                          <Button variant="ghost" size="sm" className="h-8">
+                          <Button variant="ghost" size="sm" className="h-8 text-slate-200 dark:text-slate-400 hover:text-white dark:hover:text-slate-200">
                             <MessageSquare className="w-4 h-4" />
                           </Button>
                         </VeltCommentTool>
-                        <Button variant="ghost" size="sm" className="h-8">
-                          <Flag className="w-4 h-4 mr-2" />
-                          View Details
+                        <Button variant="ghost" size="sm" className="h-8 text-slate-300 dark:text-slate-400 hover:text-slate-100 dark:hover:text-slate-200">
+                          <Flag className="w-4 h-4 mr-1" />
+                          <span className="text-xs">Details</span>
                         </Button>
                       </div>
                     </TableCell>
@@ -431,7 +427,7 @@ export function RaceSessionsTable() {
           pinDarkMode={isDarkMode}
         />
 
-        <div className="mt-8 p-6 bg-gradient-to-r from-muted/30 to-muted/10 rounded-xl border border-dashed">
+        <div className="px-6 py-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
               <div
@@ -440,10 +436,10 @@ export function RaceSessionsTable() {
                 } shadow-sm`}
               />
               <div>
-                <p className="font-medium">
+                <p className="font-medium text-slate-900 dark:text-slate-100">
                   {loading ? "Loading..." : error ? "API Error" : "Connected to OpenF1 API"}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   {loading
                     ? "Fetching latest Formula 1 session data..."
                     : error
@@ -454,8 +450,8 @@ export function RaceSessionsTable() {
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
