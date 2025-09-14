@@ -12,7 +12,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { UserSwitcher } from "@/components/user-switcher"
 import { useTheme } from "next-themes"
 import dynamic from 'next/dynamic'
-import { VeltCommentsSidebar, VeltSidebarButton } from "@veltdev/react"
+import { VeltCommentsSidebar, VeltNotificationsTool, VeltSidebarButton } from "@veltdev/react"
 
 const VeltPresence = dynamic(
   () => import('@veltdev/react').then((mod) => ({ default: mod.VeltPresence })),
@@ -143,9 +143,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   />
                 </div>
                 <ThemeToggle />
-                <Button variant="ghost" size="sm">
-                  <Bell className="w-5 h-5" />
-                </Button>
+                <VeltNotificationsTool darkMode={isDarkMode} />
                 <VeltSidebarButton darkMode={isDarkMode} />
                 <UserSwitcher />
               </div>
