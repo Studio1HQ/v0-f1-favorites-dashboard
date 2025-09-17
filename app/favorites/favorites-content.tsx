@@ -95,11 +95,11 @@ export function FavoritesContent() {
 
   if (loading) {
     return (
-      <div className="flex-1 space-y-6 p-6">
+      <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-center py-16">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading collaborative favorites...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500 mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading collaborative favorites...</p>
           </div>
         </div>
       </div>
@@ -107,30 +107,32 @@ export function FavoritesContent() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-balance">Collaborative Favorites</h1>
-          <p className="text-muted-foreground text-pretty">Shared Formula 1 race sessions favorited by all team members</p>
+    <div className="container mx-auto px-4 py-8">
+      <div className="space-y-6">
+        {/* Page header matching F1 style */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-white">2025 RACE RESULTS</h1>
+            <p className="text-gray-400 mt-2">Collaborative favorites from your team</p>
+          </div>
         </div>
-      </div>
 
-      <Card className="shadow-sm">
+      <Card className="bg-gray-900/50 border-gray-800 shadow-lg">
         <CardHeader className="pb-6">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="flex items-center gap-3 text-xl">
-                <div className="p-2 bg-red-100 dark:bg-red-900/20 rounded-lg">
-                  <Heart className="w-5 h-5 text-red-600 dark:text-red-400 fill-current" />
+              <CardTitle className="flex items-center gap-3 text-xl text-white">
+                <div className="p-2 bg-red-600/20 rounded-lg">
+                  <Heart className="w-5 h-5 text-red-500 fill-current" />
                 </div>
                 Team Favorites
               </CardTitle>
-              <CardDescription className="text-base">
+              <CardDescription className="text-base text-gray-400">
                 {favorites.length} sessions favorited by the team
               </CardDescription>
             </div>
             <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="text-sm px-3 py-1">
+              <Badge variant="secondary" className="text-sm px-3 py-1 bg-gray-800 text-gray-300 border-gray-700">
                 {filteredFavorites.length} of {favorites.length} favorites
               </Badge>
               {favorites.length > 0 && (
@@ -138,7 +140,7 @@ export function FavoritesContent() {
                   onClick={clearAllFavorites}
                   variant="outline"
                   size="sm"
-                  className="h-9 text-destructive hover:text-destructive bg-transparent"
+                  className="h-9 text-red-400 hover:text-red-300 bg-transparent border-gray-700 hover:border-red-500"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
                   Clear All
@@ -148,41 +150,41 @@ export function FavoritesContent() {
           </div>
 
           {favorites.length > 0 && (
-            <div className="space-y-6 pt-6 border-t">
+            <div className="space-y-6 pt-6 border-t border-gray-800">
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     placeholder="Search favorite sessions, locations, countries..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 h-10"
+                    className="pl-10 h-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500"
                   />
                 </div>
 
                 <div className="flex flex-wrap gap-3">
                   <Select value={sessionTypeFilter} onValueChange={setSessionTypeFilter}>
-                    <SelectTrigger className="w-44 h-10">
-                      <Filter className="w-4 h-4 mr-2" />
+                    <SelectTrigger className="w-44 h-10 bg-gray-800 border-gray-700 text-white">
+                      <Filter className="w-4 h-4 mr-2 text-gray-400" />
                       <SelectValue placeholder="Session Type" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Types</SelectItem>
-                      <SelectItem value="race">Race</SelectItem>
-                      <SelectItem value="qualifying">Qualifying</SelectItem>
-                      <SelectItem value="practice">Practice</SelectItem>
-                      <SelectItem value="sprint">Sprint</SelectItem>
+                    <SelectContent className="bg-gray-800 border-gray-700">
+                      <SelectItem value="all" className="text-white hover:bg-gray-700">All Types</SelectItem>
+                      <SelectItem value="race" className="text-white hover:bg-gray-700">Race</SelectItem>
+                      <SelectItem value="qualifying" className="text-white hover:bg-gray-700">Qualifying</SelectItem>
+                      <SelectItem value="practice" className="text-white hover:bg-gray-700">Practice</SelectItem>
+                      <SelectItem value="sprint" className="text-white hover:bg-gray-700">Sprint</SelectItem>
                     </SelectContent>
                   </Select>
 
                   <Select value={yearFilter} onValueChange={setYearFilter}>
-                    <SelectTrigger className="w-36 h-10">
+                    <SelectTrigger className="w-36 h-10 bg-gray-800 border-gray-700 text-white">
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Years</SelectItem>
+                    <SelectContent className="bg-gray-800 border-gray-700">
+                      <SelectItem value="all" className="text-white hover:bg-gray-700">All Years</SelectItem>
                       {uniqueYears.map((year) => (
-                        <SelectItem key={year} value={year.toString()}>
+                        <SelectItem key={year} value={year.toString()} className="text-white hover:bg-gray-700">
                           {year}
                         </SelectItem>
                       ))}
@@ -190,13 +192,13 @@ export function FavoritesContent() {
                   </Select>
 
                   <Select value={countryFilter} onValueChange={setCountryFilter}>
-                    <SelectTrigger className="w-44 h-10">
+                    <SelectTrigger className="w-44 h-10 bg-gray-800 border-gray-700 text-white">
                       <SelectValue placeholder="Country" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Countries</SelectItem>
+                    <SelectContent className="bg-gray-800 border-gray-700">
+                      <SelectItem value="all" className="text-white hover:bg-gray-700">All Countries</SelectItem>
                       {uniqueCountries.map((country) => (
-                        <SelectItem key={country} value={country}>
+                        <SelectItem key={country} value={country} className="text-white hover:bg-gray-700">
                           {country}
                         </SelectItem>
                       ))}
@@ -206,55 +208,55 @@ export function FavoritesContent() {
               </div>
 
               {hasActiveFilters && (
-                <div className="flex items-center gap-3 flex-wrap p-4 bg-muted/30 rounded-lg border border-dashed">
-                  <span className="text-sm font-medium text-muted-foreground">Active filters:</span>
+                <div className="flex items-center gap-3 flex-wrap p-4 bg-gray-800/30 rounded-lg border border-dashed border-gray-700">
+                  <span className="text-sm font-medium text-gray-400">Active filters:</span>
                   <div className="flex items-center gap-2 flex-wrap">
                     {searchTerm && (
-                      <Badge variant="secondary" className="text-sm px-3 py-1">
+                      <Badge variant="secondary" className="text-sm px-3 py-1 bg-gray-700 text-gray-300 border-gray-600">
                         Search: "{searchTerm}"
                         <button
                           onClick={() => setSearchTerm("")}
-                          className="ml-2 hover:bg-secondary-foreground/20 rounded-full p-0.5 transition-colors"
+                          className="ml-2 hover:bg-gray-600 rounded-full p-0.5 transition-colors"
                         >
                           <X className="w-3 h-3" />
                         </button>
                       </Badge>
                     )}
                     {sessionTypeFilter !== "all" && (
-                      <Badge variant="secondary" className="text-sm px-3 py-1">
+                      <Badge variant="secondary" className="text-sm px-3 py-1 bg-gray-700 text-gray-300 border-gray-600">
                         Type: {sessionTypeFilter}
                         <button
                           onClick={() => setSessionTypeFilter("all")}
-                          className="ml-2 hover:bg-secondary-foreground/20 rounded-full p-0.5 transition-colors"
+                          className="ml-2 hover:bg-gray-600 rounded-full p-0.5 transition-colors"
                         >
                           <X className="w-3 h-3" />
                         </button>
                       </Badge>
                     )}
                     {yearFilter !== "all" && (
-                      <Badge variant="secondary" className="text-sm px-3 py-1">
+                      <Badge variant="secondary" className="text-sm px-3 py-1 bg-gray-700 text-gray-300 border-gray-600">
                         Year: {yearFilter}
                         <button
                           onClick={() => setYearFilter("all")}
-                          className="ml-2 hover:bg-secondary-foreground/20 rounded-full p-0.5 transition-colors"
+                          className="ml-2 hover:bg-gray-600 rounded-full p-0.5 transition-colors"
                         >
                           <X className="w-3 h-3" />
                         </button>
                       </Badge>
                     )}
                     {countryFilter !== "all" && (
-                      <Badge variant="secondary" className="text-sm px-3 py-1">
+                      <Badge variant="secondary" className="text-sm px-3 py-1 bg-gray-700 text-gray-300 border-gray-600">
                         Country: {countryFilter}
                         <button
                           onClick={() => setCountryFilter("all")}
-                          className="ml-2 hover:bg-secondary-foreground/20 rounded-full p-0.5 transition-colors"
+                          className="ml-2 hover:bg-gray-600 rounded-full p-0.5 transition-colors"
                         >
                           <X className="w-3 h-3" />
                         </button>
                       </Badge>
                     )}
                   </div>
-                  <Button variant="ghost" size="sm" onClick={clearFilters} className="text-sm h-8 ml-auto">
+                  <Button variant="ghost" size="sm" onClick={clearFilters} className="text-sm h-8 ml-auto text-gray-400 hover:text-white">
                     Clear all
                   </Button>
                 </div>
@@ -267,49 +269,49 @@ export function FavoritesContent() {
           {favorites.length === 0 ? (
             <div className="text-center py-16">
               <div className="flex flex-col items-center gap-4">
-                <div className="p-4 bg-muted/50 rounded-full">
-                  <Heart className="w-8 h-8 text-muted-foreground" />
+                <div className="p-4 bg-gray-800/50 rounded-full">
+                  <Heart className="w-8 h-8 text-gray-400" />
                 </div>
                 <div className="space-y-2">
-                  <p className="font-medium">No team favorites yet</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-medium text-white">No team favorites yet</p>
+                  <p className="text-sm text-gray-400">
                     Start adding sessions to favorites from the Race Sessions page to share with your team
                   </p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="rounded-lg border overflow-hidden">
+            <div className="rounded-lg border border-gray-800 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead className="w-[120px] font-semibold">Session</TableHead>
-                    <TableHead className="font-semibold">Type</TableHead>
-                    <TableHead className="font-semibold">Location</TableHead>
-                    <TableHead className="font-semibold">Date</TableHead>
-                    <TableHead className="font-semibold">Time</TableHead>
-                    <TableHead className="font-semibold">Added</TableHead>
-                    <TableHead className="text-right font-semibold">Actions</TableHead>
+                  <TableRow className="bg-gray-800/50 border-gray-800">
+                    <TableHead className="w-[120px] font-semibold text-gray-300 border-gray-800">GRAND PRIX</TableHead>
+                    <TableHead className="font-semibold text-gray-300 border-gray-800">DATE</TableHead>
+                    <TableHead className="font-semibold text-gray-300 border-gray-800">WINNER</TableHead>
+                    <TableHead className="font-semibold text-gray-300 border-gray-800">TEAM</TableHead>
+                    <TableHead className="font-semibold text-gray-300 border-gray-800">LAPS</TableHead>
+                    <TableHead className="font-semibold text-gray-300 border-gray-800">TIME</TableHead>
+                    <TableHead className="text-right font-semibold text-gray-300 border-gray-800">ACTIONS</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredFavorites.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={7} className="text-center py-16">
+                    <TableRow className="border-gray-800">
+                      <TableCell colSpan={7} className="text-center py-16 border-gray-800">
                         <div className="flex flex-col items-center gap-4">
-                          <div className="p-4 bg-muted/50 rounded-full">
-                            <AlertCircle className="w-8 h-8 text-muted-foreground" />
+                          <div className="p-4 bg-gray-800/50 rounded-full">
+                            <AlertCircle className="w-8 h-8 text-gray-400" />
                           </div>
                           <div className="space-y-2">
-                            <p className="font-medium">No favorites match your filters</p>
-                            <p className="text-sm text-muted-foreground">Try adjusting your search criteria</p>
+                            <p className="font-medium text-white">No favorites match your filters</p>
+                            <p className="text-sm text-gray-400">Try adjusting your search criteria</p>
                           </div>
                           {hasActiveFilters && (
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={clearFilters}
-                              className="mt-2 bg-transparent"
+                              className="mt-2 bg-transparent border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
                             >
                               Clear filters
                             </Button>
@@ -321,46 +323,36 @@ export function FavoritesContent() {
                     filteredFavorites
                       .sort((a, b) => new Date(b.added_at).getTime() - new Date(a.added_at).getTime())
                       .map((session) => (
-                        <TableRow key={session.session_key} className="hover:bg-muted/30 transition-colors">
-                          <TableCell className="font-medium py-4">{session.session_name}</TableCell>
-                          <TableCell className="py-4">
-                            <Badge
-                              variant="outline"
-                              className={`${getSessionTypeColor(session.session_type)} font-medium`}
-                            >
-                              {session.session_type}
-                            </Badge>
+                        <TableRow key={session.session_key} className="hover:bg-gray-800/30 transition-colors border-gray-800">
+                          <TableCell className="font-medium py-4 text-white border-gray-800 flex items-center gap-3">
+                            <div className="w-8 h-5 bg-gradient-to-r from-blue-500 to-red-500 rounded-sm flex-shrink-0"></div>
+                            {session.location}
                           </TableCell>
-                          <TableCell className="py-4">
-                            <div className="flex items-center gap-3">
-                              <MapPin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                              <div className="min-w-0">
-                                <div className="font-medium truncate">{session.location}</div>
-                                <div className="text-sm text-muted-foreground truncate">{session.country_name}</div>
-                              </div>
+                          <TableCell className="py-4 text-gray-300 border-gray-800">{formatDate(session.date_start)}</TableCell>
+                          <TableCell className="py-4 text-white border-gray-800 flex items-center gap-3">
+                            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                              #
                             </div>
+                            <span className="font-medium">{session.session_name}</span>
                           </TableCell>
-                          <TableCell className="py-4">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4 text-muted-foreground" />
-                              <span className="font-medium">{formatDate(session.date_start)}</span>
+                          <TableCell className="py-4 text-white border-gray-800 flex items-center gap-3">
+                            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                              M
                             </div>
+                            <span>{session.session_type}</span>
                           </TableCell>
-                          <TableCell className="py-4">
-                            <div className="flex items-center gap-2">
-                              <Clock className="w-4 h-4 text-muted-foreground" />
-                              <span className="font-mono text-sm">{formatTime(session.date_start)}</span>
-                            </div>
+                          <TableCell className="py-4 text-gray-300 border-gray-800">
+                            <span className="font-mono">57</span>
                           </TableCell>
-                          <TableCell className="py-4">
-                            <div className="text-sm text-muted-foreground">{formatAddedDate(session.added_at)}</div>
+                          <TableCell className="py-4 text-gray-300 border-gray-800">
+                            <span className="font-mono">{formatTime(session.date_start)}</span>
                           </TableCell>
-                          <TableCell className="text-right py-4">
+                          <TableCell className="text-right py-4 border-gray-800">
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => removeFromFavorites(session.session_key)}
-                              className="h-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                              className="h-8 text-red-400 hover:text-red-300 hover:bg-red-500/10"
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
@@ -374,13 +366,13 @@ export function FavoritesContent() {
           )}
 
           {favorites.length > 0 && (
-            <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20 rounded-xl border border-dashed border-green-200 dark:border-green-800">
+            <div className="mt-8 p-6 bg-gradient-to-r from-red-950/20 to-gray-900/50 rounded-xl border border-dashed border-red-800">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-green-500 shadow-sm" />
+                  <div className="w-3 h-3 rounded-full bg-red-500 shadow-sm" />
                   <div>
-                    <p className="font-medium">Live Collaborative Favorites</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-white">Live Collaborative Favorites</p>
+                    <p className="text-sm text-gray-400">
                       Your {favorites.length} favorite sessions are synced in real-time with your team using Velt
                     </p>
                   </div>
@@ -390,6 +382,7 @@ export function FavoritesContent() {
           )}
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }
