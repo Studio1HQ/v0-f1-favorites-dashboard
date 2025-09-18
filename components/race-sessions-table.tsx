@@ -445,7 +445,7 @@ export function RaceSessionsTable() {
           pinDarkMode={isDarkMode}
           textMode={false}
           popoverMode={true}
-          popoverTriangleComponent={true}
+          popoverTriangleComponent={false}
         />
 
         <div className="px-6 py-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
