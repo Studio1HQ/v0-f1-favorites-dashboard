@@ -33,10 +33,13 @@ import RU from 'country-flag-icons/react/3x2/RU' // Russia
 import MY from 'country-flag-icons/react/3x2/MY' // Malaysia
 import KR from 'country-flag-icons/react/3x2/KR' // Korea
 import IN from 'country-flag-icons/react/3x2/IN' // India
+import DK from 'country-flag-icons/react/3x2/DK' // Denmark
+import FI from 'country-flag-icons/react/3x2/FI' // Finland
+import TH from 'country-flag-icons/react/3x2/TH' // Thailand
 
 // Flag components mapping
 const flagComponents: Record<string, React.ComponentType<any>> = {
-  AU, BH, CN, JP, SA, US, IT, MC, ES, CA, AT, GB, HU, BE, NL, AZ, SG, MX, BR, QA, AE, ZA, PT, FR, DE, TR, RU, MY, KR, IN
+  AU, BH, CN, JP, SA, US, IT, MC, ES, CA, AT, GB, HU, BE, NL, AZ, SG, MX, BR, QA, AE, ZA, PT, FR, DE, TR, RU, MY, KR, IN, DK, FI, TH
 }
 
 // Country name to ISO 3166-1 alpha-2 code mapping for F1 countries
@@ -83,45 +86,55 @@ const countryNameToCode: Record<string, string> = {
   'UAE': 'AE',
   'United Arab Emirates': 'AE',
   'USA': 'US',
-  'South Korea': 'KR'
+  'South Korea': 'KR',
+
+  // 3-letter to 2-letter ISO country code mappings (for F1 API data)
+  'NED': 'NL', // Netherlands
+  'GBR': 'GB', // Great Britain
+  'GER': 'DE', // Germany
+  'MEX': 'MX', // Mexico
+  'ESP': 'ES', // Spain
+  'MON': 'MC', // Monaco
+  'DEN': 'DK', // Denmark
+  'JPN': 'JP', // Japan
+  'CHN': 'CN', // China
+  'THA': 'TH', // Thailand
+  'FIN': 'FI', // Finland
+  'CAN': 'CA', // Canada
+  'FRA': 'FR', // France
 }
 
 export interface CountryFlagProps {
-  countryName: string
+  countryName?: string
+  countryCode?: string
   className?: string
   title?: string
 }
 
 export const CountryFlag: React.FC<CountryFlagProps> = ({
   countryName,
+  countryCode: providedCountryCode,
   className = "w-6 h-4",
   title
 }) => {
-  // Get country code from mapping
-  const countryCode = countryNameToCode[countryName] || countryNameToCode[countryName.replace(/\s+/g, ' ').trim()]
+  // Use provided country code or get country code from mapping
+  let countryCode = providedCountryCode || (countryName ? (countryNameToCode[countryName] || countryNameToCode[countryName.replace(/\s+/g, ' ').trim()]) : null)
+
+  // If we have a country code, try to map it (in case it's a 3-letter code)
+  if (countryCode && countryNameToCode[countryCode]) {
+    countryCode = countryNameToCode[countryCode]
+  }
 
   if (!countryCode) {
-    // Fallback to unicode flag or country initials
-    const unicodeFlag = getUnicodeFlagIcon(countryCode)
-    if (unicodeFlag) {
-      return (
-        <span
-          className={`inline-block text-lg ${className}`}
-          title={title || countryName}
-        >
-          {unicodeFlag}
-        </span>
-      )
-    }
-
-    // Final fallback to country initials
+    // Final fallback to country initials or placeholder
+    const fallbackText = countryName ? countryName.substring(0, 2).toUpperCase() : '??'
     return (
       <div
         className={`bg-gradient-to-r from-red-600 to-red-500 rounded-sm flex items-center justify-center ${className}`}
-        title={title || countryName}
+        title={title || countryName || 'Unknown Country'}
       >
         <span className="text-white text-xs font-bold">
-          {countryName.substring(0, 2).toUpperCase()}
+          {fallbackText}
         </span>
       </div>
     )
@@ -134,7 +147,7 @@ export const CountryFlag: React.FC<CountryFlagProps> = ({
       return (
         <span
           className={`inline-block text-lg ${className}`}
-          title={title || countryName}
+          title={title || countryName || countryCode}
         >
           {unicodeFlag}
         </span>
@@ -145,7 +158,7 @@ export const CountryFlag: React.FC<CountryFlagProps> = ({
     return (
       <div
         className={`bg-gradient-to-r from-red-600 to-red-500 rounded-sm flex items-center justify-center ${className}`}
-        title={title || countryName}
+        title={title || countryName || countryCode}
       >
         <span className="text-white text-xs font-bold">
           {countryCode}
