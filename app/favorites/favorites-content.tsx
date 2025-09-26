@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Search, Filter, Heart, Trash2, AlertCircle, X } from "lucide-react"
+import { CountryFlag, getCountryNameFromLocation } from "@/utils/country-flags"
 import { useFavorites } from "@/hooks/use-favorites"
-import { useTheme } from "next-themes"
 
 function formatDate(dateString: string) {
   const date = new Date(dateString)
@@ -35,8 +35,6 @@ export function FavoritesContent() {
   const [sessionTypeFilter, setSessionTypeFilter] = useState("all")
   const [yearFilter, setYearFilter] = useState("all")
   const [countryFilter, setCountryFilter] = useState("all")
-  const { theme, systemTheme } = useTheme()
-  const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
   // Define a type for session if not already defined
   type Session = {
@@ -105,22 +103,22 @@ export function FavoritesContent() {
         {/* Page header matching F1 style */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight" style={{color: isDarkMode ? 'white' : 'black'}}>2025 RACE RESULTS</h1>
-            <p className="text-gray-400 mt-2">Collaborative favorites from your team</p>
+            <h1 className="text-4xl font-bold tracking-tight text-black dark:text-white">2025 RACE RESULTS</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Collaborative favorites from your team</p>
           </div>
         </div>
 
-      <Card className="bg-gray-900/50 border-gray-800 shadow-lg">
+      <Card className="bg-white dark:bg-gray-900/50 border-gray-200 dark:border-gray-800 shadow-lg">
         <CardHeader className="pb-6">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="flex items-center gap-3 text-xl text-white">
-                <div className="p-2 bg-red-600/20 rounded-lg">
-                  <Heart className="w-5 h-5 text-red-500 fill-current" />
+              <CardTitle className="flex items-center gap-3 text-xl text-black dark:text-white">
+                <div className="p-2 bg-red-100 dark:bg-red-600/20 rounded-lg">
+                  <Heart className="w-5 h-5 text-red-600 dark:text-red-500 fill-current" />
                 </div>
                 Team Favorites
               </CardTitle>
-              <CardDescription className="text-base text-gray-400">
+              <CardDescription className="text-base text-gray-600 dark:text-gray-400">
                 {(favorites as Session[]).length} sessions favorited by the team
               </CardDescription>
             </div>
@@ -320,8 +318,12 @@ export function FavoritesContent() {
                         <TableRow key={session.session_key} className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                           <TableCell className="py-4 px-6">
                             <div className="flex items-center gap-3">
-                              <div className="w-6 h-4 bg-gradient-to-r from-blue-500 to-red-500 rounded-sm flex-shrink-0"></div>
-                              <span className="text-slate-900 dark:text-white font-medium">{session.location}</span>
+                              <CountryFlag
+                                countryName={session.country_name || getCountryNameFromLocation(session.location)}
+                                className="w-6 h-4 rounded-sm overflow-hidden shadow-sm"
+                                title={session.country_name || getCountryNameFromLocation(session.location)}
+                              />
+                              <span className="text-slate-900 dark:text-white font-medium">{session.country_name || getCountryNameFromLocation(session.location)}</span>
                             </div>
                           </TableCell>
                           <TableCell className="py-4 text-slate-900 dark:text-slate-300">{formatDate(session.date_start)}</TableCell>

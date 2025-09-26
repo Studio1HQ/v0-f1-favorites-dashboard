@@ -174,14 +174,14 @@ export function DriversTable() {
 
             <div className="flex flex-wrap gap-3">
               <Select value={teamFilter} onValueChange={setTeamFilter} disabled={loading}>
-                <SelectTrigger className="w-44 h-10">
-                  <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder="Team" />
+                <SelectTrigger className="w-44 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-black dark:text-white">
+                  <Filter className="w-4 h-4 mr-2 text-slate-600 dark:text-slate-400" />
+                  <SelectValue placeholder="Team" className="text-black dark:text-white" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Teams</SelectItem>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                  <SelectItem value="all" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">All Teams</SelectItem>
                   {uniqueTeams.map((team) => (
-                    <SelectItem key={team} value={team}>
+                    <SelectItem key={team} value={team} className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">
                       {team}
                     </SelectItem>
                   ))}
@@ -189,13 +189,13 @@ export function DriversTable() {
               </Select>
 
               <Select value={countryFilter} onValueChange={setCountryFilter} disabled={loading}>
-                <SelectTrigger className="w-44 h-10">
-                  <SelectValue placeholder="Country" />
+                <SelectTrigger className="w-44 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-black dark:text-white">
+                  <SelectValue placeholder="Country" className="text-black dark:text-white" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Countries</SelectItem>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                  <SelectItem value="all" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">All Countries</SelectItem>
                   {uniqueCountries.map((country) => (
-                    <SelectItem key={country} value={country}>
+                    <SelectItem key={country} value={country} className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">
                       {country}
                     </SelectItem>
                   ))}
@@ -205,8 +205,8 @@ export function DriversTable() {
           </div>
 
           {hasActiveFilters && (
-            <div className="flex items-center gap-3 flex-wrap p-4 bg-slate-50 dark:bg-slate-800/50 bg-blue-50 rounded-lg border border-slate-200 dark:border-slate-600 border-blue-200 border-dashed">
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-400 text-slate-800">Active filters:</span>
+            <div className="flex items-center gap-3 flex-wrap p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-600 border-dashed">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-400">Active filters:</span>
               <div className="flex items-center gap-2 flex-wrap">
                 {searchTerm && (
                   <Badge variant="secondary" className="text-sm px-3 py-1">

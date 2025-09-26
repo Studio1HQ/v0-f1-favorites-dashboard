@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Search, Filter, Calendar, Flag, RefreshCw, AlertCircle, X, Heart, MessageSquare } from "lucide-react"
-import { CountryFlag } from "@/utils/country-flags"
+import { CountryFlag, getCountryNameFromLocation } from "@/utils/country-flags"
 import { useSessions } from "@/hooks/use-sessions"
 import { useFavorites } from "@/hooks/use-favorites" // Added favorites hook
 import { useUser } from "@/contexts/user-context"
@@ -343,11 +343,11 @@ export function RaceSessionsTable() {
                     <TableCell className="py-4 px-6">
                       <div className="flex items-center gap-3">
                         <CountryFlag
-                          countryName={session.country_name || session.location}
+                          countryName={session.country_name || getCountryNameFromLocation(session.location)}
                           className="w-6 h-4 rounded-sm overflow-hidden shadow-sm"
-                          title={session.country_name || session.location}
+                          title={session.country_name || getCountryNameFromLocation(session.location)}
                         />
-                        <span className="text-slate-900 dark:text-white font-medium">{session.country_name || session.location}</span>
+                        <span className="text-slate-900 dark:text-white font-medium">{session.country_name || getCountryNameFromLocation(session.location)}</span>
                       </div>
                     </TableCell>
                     <TableCell className="py-4 text-slate-900 dark:text-slate-300">

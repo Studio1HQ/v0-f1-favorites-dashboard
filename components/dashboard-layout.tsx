@@ -25,8 +25,8 @@ const navigation = [
   { name: "2025", href: "/", active: true },
   { name: "Races", href: "/", icon: Calendar },
   { name: "Drivers", href: "/drivers", icon: Users },
-  { name: "Teams", href: "/teams", icon: Users },
-  { name: "Awards", href: "/awards", icon: BarChart3 },
+  { name: "Teams", href: "#", icon: Users },
+  { name: "Awards", href: "#", icon: BarChart3 },
 ]
 
 const topNavItems = [

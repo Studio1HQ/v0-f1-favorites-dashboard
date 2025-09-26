@@ -79,6 +79,30 @@ const countryNameToCode: Record<string, string> = {
   'Korea': 'KR',
   'India': 'IN',
 
+  // Circuit locations to country mappings
+  'Sakhir': 'BH', // Bahrain International Circuit
+  'Jeddah': 'SA', // Saudi Arabia
+  'Melbourne': 'AU', // Australia
+  'Suzuka': 'JP', // Japan
+  'Shanghai': 'CN', // China
+  'Imola': 'IT', // Italy
+  'Miami': 'US', // USA
+  'Barcelona': 'ES', // Spain
+  'Montreal': 'CA', // Canada
+  'Spielberg': 'AT', // Austria
+  'Silverstone': 'GB', // Great Britain
+  'Budapest': 'HU', // Hungary
+  'Spa-Francorchamps': 'BE', // Belgium
+  'Zandvoort': 'NL', // Netherlands
+  'Monza': 'IT', // Italy
+  'Baku': 'AZ', // Azerbaijan
+  'Marina Bay': 'SG', // Singapore
+  'Austin': 'US', // USA
+  'Mexico City': 'MX', // Mexico
+  'São Paulo': 'BR', // Brazil
+  'Losail': 'QA', // Qatar
+  'Yas Marina': 'AE', // UAE
+
   // Alternative names and variations
   'UK': 'GB',
   'United Kingdom': 'GB',
@@ -212,6 +236,38 @@ const FlagComponent: React.FC<FlagComponentProps> = ({ countryCode, className, t
 // Helper function to get country code from country name
 export const getCountryCode = (countryName: string): string | null => {
   return countryNameToCode[countryName] || countryNameToCode[countryName.replace(/\s+/g, ' ').trim()] || null
+}
+
+// Helper function to get country name from location (for display purposes)
+export const getCountryNameFromLocation = (location: string): string => {
+  const locationToCountry: Record<string, string> = {
+    'Sakhir': 'Bahrain',
+    'Jeddah': 'Saudi Arabia',
+    'Melbourne': 'Australia',
+    'Suzuka': 'Japan',
+    'Shanghai': 'China',
+    'Imola': 'Italy',
+    'Miami': 'United States',
+    'Barcelona': 'Spain',
+    'Montreal': 'Canada',
+    'Spielberg': 'Austria',
+    'Silverstone': 'Great Britain',
+    'Budapest': 'Hungary',
+    'Spa-Francorchamps': 'Belgium',
+    'Zandvoort': 'Netherlands',
+    'Monza': 'Italy',
+    'Baku': 'Azerbaijan',
+    'Marina Bay': 'Singapore',
+    'Austin': 'United States',
+    'Mexico City': 'Mexico',
+    'São Paulo': 'Brazil',
+    'Losail': 'Qatar',
+    'Yas Marina': 'United Arab Emirates',
+    'Abu Dhabi': 'United Arab Emirates',
+    'Las Vegas': 'United States',
+  }
+  
+  return locationToCountry[location] || location
 }
 
 export default CountryFlag
