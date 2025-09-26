@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Search, Filter, Calendar, MapPin, Clock, Flag, RefreshCw, AlertCircle, X, Heart, MessageSquare } from "lucide-react"
+import { Search, Filter, Calendar, Flag, RefreshCw, AlertCircle, X, Heart, MessageSquare } from "lucide-react"
 import { CountryFlag } from "@/utils/country-flags"
 import { useSessions } from "@/hooks/use-sessions"
 import { useFavorites } from "@/hooks/use-favorites" // Added favorites hook
@@ -33,20 +33,6 @@ const VeltCommentBubble = dynamic(
   { ssr: false }
 )
 
-function getSessionTypeColor(sessionType: string) {
-  switch (sessionType.toLowerCase()) {
-    case "race":
-      return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800"
-    case "qualifying":
-      return "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800"
-    case "practice":
-      return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800"
-    case "sprint":
-      return "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-800"
-    default:
-      return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-800"
-  }
-}
 
 function formatDate(dateString: string) {
   const date = new Date(dateString)
@@ -128,10 +114,6 @@ export function RaceSessionsTable() {
   }, [sessions, searchTerm, sessionTypeFilter, countryFilter])
 
   const allowedYears = [2025, 2024, 2023]
-  const uniqueYears = useMemo(
-    () => allowedYears.filter((year) => sessions.some((session) => session.year === year)),
-    [sessions],
-  )
 
   const uniqueCountries = useMemo(
     () => Array.from(new Set(sessions.map((session) => session.country_name))).sort(),
@@ -213,26 +195,26 @@ export function RaceSessionsTable() {
 
             <div className="flex flex-wrap gap-3">
               <Select value={sessionTypeFilter} onValueChange={setSessionTypeFilter} disabled={loading}>
-                <SelectTrigger className="w-44 h-10">
-                  <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder="Session Type" />
+                <SelectTrigger className="w-44 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-black dark:text-white">
+                  <Filter className="w-4 h-4 mr-2 text-slate-600 dark:text-slate-400" />
+                  <SelectValue placeholder="Session Type" className="text-black dark:text-white" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="race">Race</SelectItem>
-                  <SelectItem value="qualifying">Qualifying</SelectItem>
-                  <SelectItem value="practice">Practice</SelectItem>
-                  <SelectItem value="sprint">Sprint</SelectItem>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                  <SelectItem value="all" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">All Types</SelectItem>
+                  <SelectItem value="race" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">Race</SelectItem>
+                  <SelectItem value="qualifying" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">Qualifying</SelectItem>
+                  <SelectItem value="practice" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">Practice</SelectItem>
+                  <SelectItem value="sprint" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">Sprint</SelectItem>
                 </SelectContent>
               </Select>
 
               <Select value={yearFilter} onValueChange={setYearFilter} disabled={loading}>
-                <SelectTrigger className="w-36 h-10">
-                  <SelectValue placeholder="Year" />
+                <SelectTrigger className="w-36 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-black dark:text-white">
+                  <SelectValue placeholder="Year" className="text-black dark:text-white" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600">
                   {allowedYears.map((year) => (
-                    <SelectItem key={year} value={year.toString()}>
+                    <SelectItem key={year} value={year.toString()} className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">
                       {year}
                     </SelectItem>
                   ))}
@@ -240,13 +222,13 @@ export function RaceSessionsTable() {
               </Select>
 
               <Select value={countryFilter} onValueChange={setCountryFilter} disabled={loading}>
-                <SelectTrigger className="w-44 h-10">
-                  <SelectValue placeholder="Country" />
+                <SelectTrigger className="w-44 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-black dark:text-white">
+                  <SelectValue placeholder="Country" className="text-black dark:text-white" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Countries</SelectItem>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600">
+                  <SelectItem value="all" className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">All Countries</SelectItem>
                   {uniqueCountries.map((country) => (
-                    <SelectItem key={country} value={country}>
+                    <SelectItem key={country} value={country} className="text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">
                       {country}
                     </SelectItem>
                   ))}
@@ -352,7 +334,7 @@ export function RaceSessionsTable() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredSessions.map((session, index) => (
+                filteredSessions.map((session) => (
                   <TableRow
                     key={session.session_key}
                     id={`session-row-${session.session_key}`}

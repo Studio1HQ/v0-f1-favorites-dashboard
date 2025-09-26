@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Search, Filter, Calendar, MapPin, Clock, Heart, Trash2, AlertCircle, X } from "lucide-react"
+import { Search, Filter, Heart, Trash2, AlertCircle, X } from "lucide-react"
 import { useFavorites } from "@/hooks/use-favorites"
+import { useTheme } from "next-themes"
 
 function formatDate(dateString: string) {
   const date = new Date(dateString)
@@ -34,6 +35,7 @@ export function FavoritesContent() {
   const [sessionTypeFilter, setSessionTypeFilter] = useState("all")
   const [yearFilter, setYearFilter] = useState("all")
   const [countryFilter, setCountryFilter] = useState("all")
+  const { theme, systemTheme } = useTheme()
   const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
   // Define a type for session if not already defined
@@ -66,12 +68,12 @@ export function FavoritesContent() {
   }, [favorites, searchTerm, sessionTypeFilter, yearFilter, countryFilter])
 
   const uniqueYears = useMemo(
-    () => Array.from(new Set(favorites.map((session: any) => session.year))).sort((a, b) => b - a),
+    () => Array.from(new Set((favorites as Session[]).map((session) => session.year))).sort((a, b) => b - a),
     [favorites],
   )
 
   const uniqueCountries = useMemo(
-    () => Array.from(new Set(favorites.map((session: any) => session.country_name))).sort(),
+    () => Array.from(new Set((favorites as Session[]).map((session) => session.country_name))).sort(),
     [favorites],
   )
 
@@ -119,14 +121,14 @@ export function FavoritesContent() {
                 Team Favorites
               </CardTitle>
               <CardDescription className="text-base text-gray-400">
-                {favorites.length} sessions favorited by the team
+                {(favorites as Session[]).length} sessions favorited by the team
               </CardDescription>
             </div>
             <div className="flex items-center gap-3">
               <Badge variant="secondary" className="text-sm px-3 py-1 bg-gray-800 text-gray-300 border-gray-700">
-                {filteredFavorites.length} of {favorites.length} favorites
+                {filteredFavorites.length} of {(favorites as Session[]).length} favorites
               </Badge>
-              {favorites.length > 0 && (
+              {(favorites as Session[]).length > 0 && (
                 <Button
                   onClick={clearAllFavorites}
                   variant="outline"
@@ -140,7 +142,7 @@ export function FavoritesContent() {
             </div>
           </div>
 
-          {favorites?.length > 0 && (
+          {(favorites as Session[])?.length > 0 && (
             <div className="space-y-6 pt-6 border-t border-gray-800">
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="relative flex-1">
@@ -154,29 +156,29 @@ export function FavoritesContent() {
                   />
                 </div>
 
-                <div className="flex flex-wrap gap-3" style={{color: isDarkMode ? 'white' : 'black'}}>
+                <div className="flex flex-wrap gap-3">
                   <Select value={sessionTypeFilter} onValueChange={setSessionTypeFilter}>
-                    <SelectTrigger className="w-44 h-10 bg-gray-800 border-gray-700" style={{color: isDarkMode ? 'white' : 'black'}}>
-                      <Filter className="w-4 h-4 mr-2 text-gray-400" style={{color: isDarkMode ? 'white' : 'black'}} />
-                      <SelectValue placeholder="Session Type" style={{color: isDarkMode ? 'white' : 'black'}} />
+                    <SelectTrigger className="w-44 h-10 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                      <Filter className="w-4 h-4 mr-2 text-gray-600 dark:text-gray-400" />
+                      <SelectValue placeholder="Session Type" className="text-black dark:text-white" />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-800 border-gray-700">
-                      <SelectItem value="all" className="hover:bg-gray-700">All Types</SelectItem>
-                      <SelectItem value="race" className="hover:bg-gray-700">Race</SelectItem>
-                      <SelectItem value="qualifying" className="hover:bg-gray-700">Qualifying</SelectItem>
-                      <SelectItem value="practice" className="hover:bg-gray-700">Practice</SelectItem>
-                      <SelectItem value="sprint" className="hover:bg-gray-700">Sprint</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
+                      <SelectItem value="all" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">All Types</SelectItem>
+                      <SelectItem value="race" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Race</SelectItem>
+                      <SelectItem value="qualifying" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Qualifying</SelectItem>
+                      <SelectItem value="practice" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Practice</SelectItem>
+                      <SelectItem value="sprint" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Sprint</SelectItem>
                     </SelectContent>
                   </Select>
 
                   <Select value={yearFilter} onValueChange={setYearFilter}>
-                    <SelectTrigger className="w-36 h-10 bg-gray-800 border-gray-700 text-white">
-                      <SelectValue placeholder="Year" />
+                    <SelectTrigger className="w-36 h-10 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                      <SelectValue placeholder="Year" className="text-black dark:text-white" />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-800 border-gray-700">
-                      <SelectItem value="all" className="text-white hover:bg-gray-700">All Years</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
+                      <SelectItem value="all" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">All Years</SelectItem>
                       {uniqueYears.map((year) => (
-                        <SelectItem key={year} value={year.toString()} className="text-white hover:bg-gray-700">
+                        <SelectItem key={year} value={year.toString()} className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                           {year}
                         </SelectItem>
                       ))}
@@ -184,13 +186,13 @@ export function FavoritesContent() {
                   </Select>
 
                   <Select value={countryFilter} onValueChange={setCountryFilter}>
-                    <SelectTrigger className="w-44 h-10 bg-gray-800 border-gray-700 text-white">
-                      <SelectValue placeholder="Country" />
+                    <SelectTrigger className="w-44 h-10 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                      <SelectValue placeholder="Country" className="text-black dark:text-white" />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-800 border-gray-700">
-                      <SelectItem value="all" className="text-white hover:bg-gray-700">All Countries</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
+                      <SelectItem value="all" className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">All Countries</SelectItem>
                       {uniqueCountries.map((country) => (
-                        <SelectItem key={country} value={country} className="text-white hover:bg-gray-700">
+                        <SelectItem key={country} value={country} className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                           {country}
                         </SelectItem>
                       ))}
@@ -258,7 +260,7 @@ export function FavoritesContent() {
         </CardHeader>
 
         <CardContent className="pt-0">
-          {favorites.length === 0 ? (
+          {(favorites as Session[]).length === 0 ? (
             <div className="text-center py-16">
               <div className="flex flex-col items-center gap-4">
                 <div className="p-4 bg-gray-800/50 rounded-full">
@@ -273,23 +275,23 @@ export function FavoritesContent() {
               </div>
             </div>
           ) : (
-            <div className="rounded-lg border border-gray-800 overflow-hidden">
+            <div className="bg-slate-100 dark:bg-slate-900 border-y border-slate-300 dark:border-slate-700">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-gray-800/50 border-gray-800">
-                    <TableHead className="w-[120px] font-semibold text-gray-300 border-gray-800">GRAND PRIX</TableHead>
-                    <TableHead className="font-semibold text-gray-300 border-gray-800">DATE</TableHead>
-                    <TableHead className="font-semibold text-gray-300 border-gray-800">WINNER</TableHead>
-                    <TableHead className="font-semibold text-gray-300 border-gray-800">TEAM</TableHead>
-                    <TableHead className="font-semibold text-gray-300 border-gray-800">LAPS</TableHead>
-                    <TableHead className="font-semibold text-gray-300 border-gray-800">TIME</TableHead>
-                    <TableHead className="text-right font-semibold text-gray-300 border-gray-800">ACTIONS</TableHead>
+                  <TableRow className="border-b border-slate-300 dark:border-slate-700 hover:bg-transparent">
+                    <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 px-6">GRAND PRIX</TableHead>
+                    <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">DATE</TableHead>
+                    <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">WINNER</TableHead>
+                    <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TEAM</TableHead>
+                    <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">LAPS</TableHead>
+                    <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4">TIME</TableHead>
+                    <TableHead className="text-slate-800 dark:text-slate-300 font-bold text-xs uppercase tracking-wider py-4 text-right">ACTIONS</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="bg-white dark:bg-slate-900">
                   {filteredFavorites.length === 0 ? (
-                    <TableRow className="border-gray-800">
-                      <TableCell colSpan={7} className="text-center py-16 border-gray-800">
+                    <TableRow className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <TableCell colSpan={7} className="text-center py-16">
                         <div className="flex flex-col items-center gap-4">
                           <div className="p-4 bg-gray-800/50 rounded-full">
                             <AlertCircle className="w-8 h-8 text-gray-400" />
@@ -315,35 +317,41 @@ export function FavoritesContent() {
                     filteredFavorites
                       .sort((a, b) => new Date(b.added_at).getTime() - new Date(a.added_at).getTime())
                       .map((session) => (
-                        <TableRow key={session.session_key} className="hover:bg-gray-800/30 transition-colors border-gray-800">
-                          <TableCell className="font-medium py-4 text-white border-gray-800 flex items-center gap-3">
-                            <div className="w-8 h-5 bg-gradient-to-r from-blue-500 to-red-500 rounded-sm flex-shrink-0"></div>
-                            {session.location}
-                          </TableCell>
-                          <TableCell className="py-4 text-gray-300 border-gray-800">{formatDate(session.date_start)}</TableCell>
-                          <TableCell className="py-4 text-white border-gray-800 flex items-center gap-3">
-                            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                              #
+                        <TableRow key={session.session_key} className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                          <TableCell className="py-4 px-6">
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-4 bg-gradient-to-r from-blue-500 to-red-500 rounded-sm flex-shrink-0"></div>
+                              <span className="text-slate-900 dark:text-white font-medium">{session.location}</span>
                             </div>
-                            <span className="font-medium">{session.session_name}</span>
                           </TableCell>
-                          <TableCell className="py-4 text-white border-gray-800 flex items-center gap-3">
-                            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                              M
+                          <TableCell className="py-4 text-slate-900 dark:text-slate-300">{formatDate(session.date_start)}</TableCell>
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-bold">#</span>
+                              </div>
+                              <span className="text-orange-600 dark:text-orange-400 font-medium">{session.session_name}</span>
                             </div>
-                            <span>{session.session_type}</span>
                           </TableCell>
-                          <TableCell className="py-4 text-gray-300 border-gray-800">
+                          <TableCell className="py-4">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-bold">M</span>
+                              </div>
+                              <span className="text-orange-600 dark:text-orange-400 font-medium">{session.session_type}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4 text-slate-900 dark:text-slate-300">
                             <span className="font-mono">57</span>
                           </TableCell>
-                          <TableCell className="py-4 text-gray-300 border-gray-800">
-                            <span className="font-mono">{formatTime(session.date_start)}</span>
+                          <TableCell className="py-4 text-slate-900 dark:text-slate-300 font-mono text-sm">
+                            {formatTime(session.date_start)}
                           </TableCell>
-                          <TableCell className="text-right py-4 border-gray-800">
+                          <TableCell className="text-right py-4">
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => removeFromFavorites(session.session_key)}
+                              onClick={() => removeFromFavorites(Number(session.session_key))}
                               className="h-8 text-red-400 hover:text-red-300 hover:bg-red-500/10"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -357,7 +365,7 @@ export function FavoritesContent() {
             </div>
           )}
 
-          {favorites.length > 0 && (
+          {(favorites as Session[]).length > 0 && (
             <div className="mt-8 p-6 bg-gradient-to-r from-red-950/20 to-gray-900/50 rounded-xl border border-dashed border-red-800">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-3">
@@ -365,7 +373,7 @@ export function FavoritesContent() {
                   <div>
                     <p className="font-medium text-white">Live Collaborative Favorites</p>
                     <p className="text-sm text-gray-400">
-                      Your {favorites.length} favorite sessions are synced in real-time with your team using Velt
+                      Your {(favorites as Session[]).length} favorite sessions are synced in real-time with your team using Velt
                     </p>
                   </div>
                 </div>
