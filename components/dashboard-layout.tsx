@@ -30,13 +30,13 @@ const navigation = [
 ]
 
 const topNavItems = [
-  { name: "Schedule", href: "/schedule" },
+  { name: "Schedule", href: "#" },
   { name: "Results", href: "/" },
-  { name: "News", href: "/news" },
+  { name: "News", href: "#" },
   { name: "Drivers", href: "/drivers" },
-  { name: "Teams", href: "/teams" },
-  { name: "Fantasy & Gaming", href: "/fantasy" },
-  { name: "F1 Members' Area", href: "/members" },
+  { name: "Teams", href: "#" },
+  { name: "Fantasy & Gaming", href: "#" },
+  { name: "F1 Members' Area", href: "#" },
 ]
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -47,12 +47,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black dark:bg-black bg-white text-black dark:text-white">
       {/* Velt sidebar */}
       <VeltCommentsSidebar darkMode={isDarkMode} />
 
       {/* F1 Style Header */}
-      <header className="bg-black border-b border-gray-800">
+      <header className="bg-black dark:bg-black bg-white border-b border-gray-800 dark:border-gray-800 border-gray-200">
         {/* Top navigation bar */}
         <div className="border-b border-gray-800">
           <div className="container mx-auto px-4">
@@ -64,7 +64,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     href={item.href}
                     className={cn(
                       "hover:text-red-500 transition-colors",
-                      pathname === item.href ? "text-red-500 border-b-2 border-red-500" : "text-gray-300"
+                      pathname === item.href ? "text-red-500 border-b-2 border-red-500" : "text-gray-300 dark:text-gray-300 text-gray-700"
                     )}
                   >
                     {item.name}
@@ -72,7 +72,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 ))}
               </div>
               <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="sm" className="text-white hover:text-red-500">
+                <Button variant="ghost" size="sm" className="text-white dark:text-white text-black hover:text-red-500">
                   Sign In
                 </Button>
                 <Button className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1">
@@ -100,8 +100,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
+                  style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#F3F3F3', borderColor: isDarkMode ? '#333333' : '#CCCCCC', color: isDarkMode ? '#FFFFFF' : '#000000' }}
                   placeholder="Search races, drivers, teams..."
-                  className="pl-10 pr-4 py-2 w-80 text-sm bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-white placeholder-gray-400"
+                  className="pl-10 pr-4 py-2 w-80 text-sm bg-gray-900 dark:bg-gray-900 bg-gray-100 border border-gray-700 dark:border-gray-700 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-white dark:text-white text-black placeholder-gray-400 dark:placeholder-gray-400 placeholder-gray-500"
                 />
               </div>
 
@@ -117,7 +118,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Navigation tabs */}
-        <div className="border-b border-gray-800">
+        <div className="border-b border-gray-800 dark:border-gray-800 border-gray-200">
           <div className="container mx-auto px-4">
             <nav className="flex items-center space-x-8 h-12">
               {navigation.map((item) => {
@@ -129,8 +130,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     className={cn(
                       "flex items-center space-x-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
                       isActive
-                        ? "text-white border-red-500"
-                        : "text-gray-400 border-transparent hover:text-white hover:border-gray-600"
+                        ? "text-white dark:text-white text-black border-red-500"
+                        : "text-gray-400 dark:text-gray-400 text-gray-600 border-transparent hover:text-white dark:hover:text-white hover:text-black hover:border-gray-600"
                     )}
                   >
                     {item.icon && <item.icon className="w-4 h-4" />}
@@ -145,8 +146,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 className={cn(
                   "flex items-center space-x-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors",
                   pathname === "/favorites"
-                    ? "text-white border-red-500"
-                    : "text-gray-400 border-transparent hover:text-white hover:border-gray-600"
+                    ? "text-white dark:text-white text-black border-red-500"
+                    : "text-gray-400 dark:text-gray-400 text-gray-600 border-transparent hover:text-white dark:hover:text-white hover:text-black hover:border-gray-600"
                 )}
               >
                 <Heart className="w-4 h-4" />
@@ -158,29 +159,29 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </header>
 
       {/* Main content */}
-      <main className="min-h-screen bg-gray-950 text-white">
+      <main className="min-h-screen bg-gray-950 dark:bg-gray-950 bg-gray-50 text-white dark:text-white text-black" style={{backgroundColor: isDarkMode ? '#121212' : '#FAFAFA'}}>
         {children}
       </main>
 
       {/* F1 Style Footer */}
-      <footer className="bg-black border-t border-gray-800 text-white">
+      <footer className="bg-black dark:bg-black bg-white border-t border-gray-800 dark:border-gray-800 border-gray-200 text-white dark:text-white text-black">
         {/* Sponsors section */}
         <div className="border-b border-gray-800 py-8">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-6 lg:grid-cols-12 gap-8 items-center justify-items-center opacity-70">
               {/* Mock sponsor logos */}
-              <div className="text-gray-400 font-bold text-sm">ARAMCO</div>
-              <div className="text-gray-400 font-bold text-sm">DHL</div>
-              <div className="text-gray-400 font-bold text-sm">HEINEKEN</div>
-              <div className="text-gray-400 font-bold text-sm">PIRELLI</div>
-              <div className="text-gray-400 font-bold text-sm">AWS</div>
-              <div className="text-gray-400 font-bold text-sm">CRYPTO.COM</div>
-              <div className="text-gray-400 font-bold text-sm">MSC</div>
-              <div className="text-gray-400 font-bold text-sm">QATAR AIRWAYS</div>
-              <div className="text-gray-400 font-bold text-sm">TAG HEUER</div>
-              <div className="text-gray-400 font-bold text-sm">SANTANDER</div>
-              <div className="text-gray-400 font-bold text-sm">VELAS</div>
-              <div className="text-gray-400 font-bold text-sm">PUMA</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">ARAMCO</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">DHL</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">HEINEKEN</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">PIRELLI</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">AWS</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">CRYPTO.COM</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">MSC</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">QATAR AIRWAYS</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">TAG HEUER</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">SANTANDER</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">VELAS</div>
+              <div className="text-gray-400 dark:text-gray-400 text-gray-600 font-bold text-sm">PUMA</div>
             </div>
           </div>
         </div>
@@ -191,49 +192,49 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
               <div>
                 <h3 className="font-semibold mb-4">Schedule</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="#" className="hover:text-white">Race Calendar</Link></li>
-                  <li><Link href="#" className="hover:text-white">Results</Link></li>
+                <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Race Calendar</Link></li>
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Results</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">Drivers</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="#" className="hover:text-white">Driver Standings</Link></li>
-                  <li><Link href="#" className="hover:text-white">Driver Info</Link></li>
+                <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Driver Standings</Link></li>
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Driver Info</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">News</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="#" className="hover:text-white">Latest News</Link></li>
-                  <li><Link href="#" className="hover:text-white">Tech Updates</Link></li>
+                <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Latest News</Link></li>
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Tech Updates</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">Teams</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="#" className="hover:text-white">Team Standings</Link></li>
-                  <li><Link href="#" className="hover:text-white">Team Info</Link></li>
+                <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Team Standings</Link></li>
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Team Info</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">Fantasy & Gaming</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="#" className="hover:text-white">F1 Fantasy</Link></li>
-                  <li><Link href="#" className="hover:text-white">F1 Play</Link></li>
+                <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">F1 Fantasy</Link></li>
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">F1 Play</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">More</h3>
-                <ul className="space-y-2 text-sm text-gray-400">
-                  <li><Link href="#" className="hover:text-white">Cookie Preferences</Link></li>
-                  <li><Link href="#" className="hover:text-white">Display Mode</Link></li>
+                <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Cookie Preferences</Link></li>
+                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Display Mode</Link></li>
                 </ul>
               </div>
             </div>
@@ -241,23 +242,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Bottom footer */}
-        <div className="border-t border-gray-800 py-4">
+        <div className="border-t border-gray-800 dark:border-gray-800 border-gray-200 py-4">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between text-sm text-gray-400">
+            <div className="flex items-center justify-between text-sm text-gray-400 dark:text-gray-400 text-gray-600">
               <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-2">
                   <div className="text-red-500 font-bold">🏎️ F1</div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <Link href="#" className="hover:text-white">Facebook</Link>
-                  <Link href="#" className="hover:text-white">Twitter</Link>
-                  <Link href="#" className="hover:text-white">Instagram</Link>
-                  <Link href="#" className="hover:text-white">YouTube</Link>
+                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Facebook</Link>
+                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Twitter</Link>
+                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Instagram</Link>
+                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">YouTube</Link>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
                 <span>© 2003-2025 Formula One World Championship Limited</span>
-                <Button variant="outline" size="sm" className="text-white border-gray-600 hover:border-gray-400">
+                <Button variant="outline" size="sm" className="text-white dark:text-white text-black border-gray-600 dark:border-gray-600 border-gray-300 hover:border-gray-400">
                   Display mode
                 </Button>
               </div>

@@ -8,12 +8,12 @@ export default function DriversPage() {
         {/* F1-style page header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-white">F1 DRIVERS</h1>
-            <p className="text-gray-400 mt-2">Complete Formula 1 driver roster and team information</p>
+            <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white text-black">F1 DRIVERS</h1>
+            <p className="text-gray-400 dark:text-gray-400 text-gray-600 mt-2">Complete Formula 1 driver roster and team information</p>
           </div>
-          <div className="text-right text-gray-500">
-            <div className="text-sm font-medium">FORMULA 1</div>
-            <div className="text-xs">OFFICIAL DATA</div>
+          <div className="text-right text-gray-500 dark:text-gray-500 text-gray-700">
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-500 text-gray-700">FORMULA 1</div>
+            <div className="text-xs text-gray-500 dark:text-gray-500 text-gray-700">OFFICIAL DATA</div>
           </div>
         </div>
 

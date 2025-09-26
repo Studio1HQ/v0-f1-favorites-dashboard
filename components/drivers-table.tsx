@@ -144,16 +144,16 @@ export function DriversTable() {
       <div className="px-6 py-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <div className="bg-slate-700 dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-600 dark:border-slate-700">
-              <span className="text-slate-100 dark:text-slate-300 text-sm font-medium">All</span>
+            <div className="bg-slate-700 dark:bg-slate-800 bg-slate-200 px-4 py-2 rounded-lg border border-slate-600 dark:border-slate-700 border-slate-300">
+              <span className="text-slate-100 dark:text-slate-300 text-slate-800 text-sm font-medium">All</span>
             </div>
             {loading && <RefreshCw className="w-4 h-4 animate-spin text-slate-600 dark:text-slate-500" />}
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-slate-600 dark:text-slate-500 text-sm">
+            <div className="text-slate-600 dark:text-slate-500 text-slate-700 text-sm">
               {filteredDrivers.length} of {drivers.length} drivers
             </div>
-            <Button onClick={refetch} variant="ghost" size="sm" disabled={loading} className="h-8 text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200">
+            <Button onClick={refetch} variant="ghost" size="sm" disabled={loading} className="h-8 text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 text-slate-700 hover:text-slate-900">
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </Button>
           </div>
@@ -205,8 +205,8 @@ export function DriversTable() {
           </div>
 
           {hasActiveFilters && (
-            <div className="flex items-center gap-3 flex-wrap p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-600 border-dashed">
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-400">Active filters:</span>
+            <div className="flex items-center gap-3 flex-wrap p-4 bg-slate-50 dark:bg-slate-800/50 bg-blue-50 rounded-lg border border-slate-200 dark:border-slate-600 border-blue-200 border-dashed">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-400 text-slate-800">Active filters:</span>
               <div className="flex items-center gap-2 flex-wrap">
                 {searchTerm && (
                   <Badge variant="secondary" className="text-sm px-3 py-1">
@@ -251,7 +251,7 @@ export function DriversTable() {
       </div>
 
       <div className="overflow-hidden">
-        <div className="bg-slate-100 dark:bg-slate-900 border-y border-slate-300 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-900 border-y border-slate-300 dark:border-slate-700">
           <Table>
             <TableHeader>
               <TableRow className="border-b border-slate-300 dark:border-slate-700 hover:bg-transparent">
@@ -399,7 +399,7 @@ export function DriversTable() {
           popoverTriangleComponent={false}
         />
 
-        <div className="px-6 py-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
+        <div className="px-6 py-6 bg-slate-50 dark:bg-slate-800/50 bg-gray-100 border-t border-slate-200 dark:border-slate-700 border-gray-200">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
               <div

@@ -10,21 +10,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Search, Filter, Calendar, MapPin, Clock, Heart, Trash2, AlertCircle, X } from "lucide-react"
 import { useFavorites } from "@/hooks/use-favorites"
 
-function getSessionTypeColor(sessionType: string) {
-  switch (sessionType.toLowerCase()) {
-    case "race":
-      return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800"
-    case "qualifying":
-      return "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800"
-    case "practice":
-      return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800"
-    case "sprint":
-      return "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-800"
-    default:
-      return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-800"
-  }
-}
-
 function formatDate(dateString: string) {
   const date = new Date(dateString)
   return date.toLocaleDateString("en-US", {
@@ -43,24 +28,30 @@ function formatTime(dateString: string) {
   })
 }
 
-function formatAddedDate(dateString: string) {
-  const date = new Date(dateString)
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  })
-}
-
 export function FavoritesContent() {
   const { favorites, loading, removeFromFavorites, clearAllFavorites } = useFavorites()
   const [searchTerm, setSearchTerm] = useState("")
   const [sessionTypeFilter, setSessionTypeFilter] = useState("all")
   const [yearFilter, setYearFilter] = useState("all")
   const [countryFilter, setCountryFilter] = useState("all")
+  const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
+
+  // Define a type for session if not already defined
+  type Session = {
+    session_key: string
+    session_name: string
+    session_type: string
+    location: string
+    country_name: string
+    year: number
+    date_start: string
+    added_at: string
+    // add other fields as needed
+  }
 
   const filteredFavorites = useMemo(() => {
-    return favorites.filter((session) => {
+    const favoritesArray = (favorites ?? []) as Session[]
+    return favoritesArray.filter((session) => {
       const matchesSearch =
         session.session_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         session.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -75,12 +66,12 @@ export function FavoritesContent() {
   }, [favorites, searchTerm, sessionTypeFilter, yearFilter, countryFilter])
 
   const uniqueYears = useMemo(
-    () => Array.from(new Set(favorites.map((session) => session.year))).sort((a, b) => b - a),
+    () => Array.from(new Set(favorites.map((session: any) => session.year))).sort((a, b) => b - a),
     [favorites],
   )
 
   const uniqueCountries = useMemo(
-    () => Array.from(new Set(favorites.map((session) => session.country_name))).sort(),
+    () => Array.from(new Set(favorites.map((session: any) => session.country_name))).sort(),
     [favorites],
   )
 
@@ -112,7 +103,7 @@ export function FavoritesContent() {
         {/* Page header matching F1 style */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-white">2025 RACE RESULTS</h1>
+            <h1 className="text-4xl font-bold tracking-tight" style={{color: isDarkMode ? 'white' : 'black'}}>2025 RACE RESULTS</h1>
             <p className="text-gray-400 mt-2">Collaborative favorites from your team</p>
           </div>
         </div>
@@ -149,7 +140,7 @@ export function FavoritesContent() {
             </div>
           </div>
 
-          {favorites.length > 0 && (
+          {favorites?.length > 0 && (
             <div className="space-y-6 pt-6 border-t border-gray-800">
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="relative flex-1">
@@ -158,22 +149,23 @@ export function FavoritesContent() {
                     placeholder="Search favorite sessions, locations, countries..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ backgroundColor: '#1A1A1A', borderColor: '#333333', color: '#FFFFFF' }}
                     className="pl-10 h-10 bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500"
                   />
                 </div>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3" style={{color: isDarkMode ? 'white' : 'black'}}>
                   <Select value={sessionTypeFilter} onValueChange={setSessionTypeFilter}>
-                    <SelectTrigger className="w-44 h-10 bg-gray-800 border-gray-700 text-white">
-                      <Filter className="w-4 h-4 mr-2 text-gray-400" />
-                      <SelectValue placeholder="Session Type" />
+                    <SelectTrigger className="w-44 h-10 bg-gray-800 border-gray-700" style={{color: isDarkMode ? 'white' : 'black'}}>
+                      <Filter className="w-4 h-4 mr-2 text-gray-400" style={{color: isDarkMode ? 'white' : 'black'}} />
+                      <SelectValue placeholder="Session Type" style={{color: isDarkMode ? 'white' : 'black'}} />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-800 border-gray-700">
-                      <SelectItem value="all" className="text-white hover:bg-gray-700">All Types</SelectItem>
-                      <SelectItem value="race" className="text-white hover:bg-gray-700">Race</SelectItem>
-                      <SelectItem value="qualifying" className="text-white hover:bg-gray-700">Qualifying</SelectItem>
-                      <SelectItem value="practice" className="text-white hover:bg-gray-700">Practice</SelectItem>
-                      <SelectItem value="sprint" className="text-white hover:bg-gray-700">Sprint</SelectItem>
+                      <SelectItem value="all" className="hover:bg-gray-700">All Types</SelectItem>
+                      <SelectItem value="race" className="hover:bg-gray-700">Race</SelectItem>
+                      <SelectItem value="qualifying" className="hover:bg-gray-700">Qualifying</SelectItem>
+                      <SelectItem value="practice" className="hover:bg-gray-700">Practice</SelectItem>
+                      <SelectItem value="sprint" className="hover:bg-gray-700">Sprint</SelectItem>
                     </SelectContent>
                   </Select>
 
