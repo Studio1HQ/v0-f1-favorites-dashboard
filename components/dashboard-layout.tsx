@@ -108,7 +108,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
               <div className="flex items-center space-x-2">
                 <VeltPresence flockMode={true} maxUsers={2} />
-                <ThemeToggle />
+                <div className="ml-3">
+                  <ThemeToggle />
+                </div>
                 <VeltNotificationsTool darkMode={isDarkMode} />
                 <VeltSidebarButton darkMode={isDarkMode} />
                 <UserSwitcher />
