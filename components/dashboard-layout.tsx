@@ -195,48 +195,48 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <div>
                 <h3 className="font-semibold mb-4">Schedule</h3>
                 <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Race Calendar</Link></li>
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Results</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Race Calendar</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Results</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">Drivers</h3>
                 <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Driver Standings</Link></li>
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Driver Info</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Driver Standings</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Driver Info</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">News</h3>
                 <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Latest News</Link></li>
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Tech Updates</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Latest News</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Tech Updates</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">Teams</h3>
                 <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Team Standings</Link></li>
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Team Info</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Team Standings</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Team Info</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">Fantasy & Gaming</h3>
                 <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">F1 Fantasy</Link></li>
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">F1 Play</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">F1 Fantasy</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">F1 Play</Link></li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="font-semibold mb-4">More</h3>
                 <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-400 text-gray-600">
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Cookie Preferences</Link></li>
-                  <li><Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Display Mode</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Cookie Preferences</Link></li>
+                  <li><Link href="#" className="hover:text-black dark:hover:text-white">Display Mode</Link></li>
                 </ul>
               </div>
             </div>
@@ -252,10 +252,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   <div className="text-red-500 font-bold">🏎️ F1</div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Facebook</Link>
-                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Twitter</Link>
-                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">Instagram</Link>
-                  <Link href="#" className="hover:text-white dark:hover:text-white hover:text-black">YouTube</Link>
+                  <Link href="#" className="hover:text-black dark:hover:text-white">Facebook</Link>
+                  <Link href="#" className="hover:text-black dark:hover:text-white">Twitter</Link>
+                  <Link href="#" className="hover:text-black dark:hover:text-white">Instagram</Link>
+                  <Link href="#" className="hover:text-black dark:hover:text-white">YouTube</Link>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
