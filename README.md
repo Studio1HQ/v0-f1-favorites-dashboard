@@ -91,6 +91,6 @@ Focus on getting the race sessions API integration working perfectly with beauti
 ## Stack Used
 
 - v0.dev for UI
-- Zed IDE with Velt MCP
+- Visual Studio Code with Claude Code
 
 
